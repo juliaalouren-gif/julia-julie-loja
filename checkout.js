@@ -210,7 +210,7 @@ async function initStripe() {
     stripeObj = Stripe(STRIPE_PUBLISHABLE_KEY);
 
     try {
-        const res = await fetch('/create-payment-intent', {
+        const res = await fetch('/api/create-payment-intent', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: Math.round(orderTotal * 100), currency: 'usd' })
