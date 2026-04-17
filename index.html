@@ -609,14 +609,14 @@
     <script>
         function goToCheckout() {
             const promo = document.querySelector('input[name="bundle"]:checked')?.value || 'B';
-            const qty   = window.qtyState ? (window.qtyState[promo] || 1) : 1;
+            const qty   = (typeof qtyState !== 'undefined') ? (qtyState[promo] || 1) : 1;
             window.location.href = `checkout.html?promo=${promo}&kits=${qty}`;
         }
     </script>
     <script>
         const PROMO = {
-            A: { unitPrice: 32.90, brasPerKit: 2 },
-            B: { unitPrice: 49.90, brasPerKit: 4 }
+            A: { unitPrice: 32.90, brasPerKit: 2, oldPerBra: 32.90 },
+            B: { unitPrice: 49.90, brasPerKit: 4, oldPerBra: 32.90 }
         };
         const qtyState = { A: 1, B: 1 };
 
@@ -633,10 +633,13 @@
         }
 
         function updatePrice(promo) {
-            const total = (PROMO[promo].unitPrice * qtyState[promo]).toFixed(2);
-            document.getElementById('price' + promo).textContent = '$' + total;
-            const n = qtyState[promo];
-            const b = PROMO[promo].brasPerKit;
+            const n     = qtyState[promo];
+            const b     = PROMO[promo].brasPerKit;
+            const price = PROMO[promo].unitPrice * n;
+            const old   = PROMO[promo].oldPerBra * b * n * 2; // dobro do atual (sem promo)
+            document.getElementById('price' + promo).textContent = '$' + price.toFixed(2);
+            const oldEl = document.querySelector('#promo' + promo + ' .old-price');
+            if (oldEl) oldEl.textContent = '$' + old.toFixed(2);
             document.getElementById('qtyLabel' + promo).textContent = n === 1
                 ? `kit (${b} bras)` : `kits (${n * b} bras)`;
             document.getElementById('qty' + promo).textContent = n;
