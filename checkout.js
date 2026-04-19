@@ -9,7 +9,7 @@ const params    = new URLSearchParams(window.location.search);
 const promoType = params.get('promo') || 'B';        // 'A' = Buy1Get2, 'B' = Buy2Get4
 const kitQty    = parseInt(params.get('kits') || '1');
 const prices    = { A: 32.90, B: 49.90 };
-const labels    = { A: 'Buy 1, Get 2', B: 'Buy 2, Get 4' };
+const labels    = { A: 'Compre 1, Leve 2', B: 'Compre 2, Leve 4' };
 const brasPerKit = { A: 2, B: 4 };
 
 let shippingCost   = 0;
@@ -49,7 +49,7 @@ function updateTotals() {
     const shippingEl = document.getElementById('r-shipping');
     if (shippingEl) {
         if (shippingCost === 0) {
-            shippingEl.textContent  = currentStep === 'info' ? 'Calculated at next step' : 'Free';
+            shippingEl.textContent  = currentStep === 'info' ? 'Calculated at next step' : 'Grátis';
             shippingEl.className    = 'co-muted';
         } else {
             shippingEl.textContent = '$' + shippingCost.toFixed(2);
@@ -68,7 +68,7 @@ function updateShipping(cost) {
     const methodEl = document.getElementById('pill-method');
     if (methodEl) {
         methodEl.textContent = cost === 0
-            ? 'Standard Shipping · Free'
+            ? 'Standard Shipping · Grátis'
             : 'Express Shipping · $9.99';
     }
 
@@ -92,7 +92,7 @@ function applyDiscount() {
         if (row) row.classList.remove('hidden');
         updateTotals();
     } else {
-        alert('Invalid discount code. Try JULIA10, WELCOME15 or SAVE20.');
+        alert('Cupom inválido. Try JULIA10, WELCOME15 or SAVE20.');
     }
 }
 
