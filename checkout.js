@@ -6,27 +6,25 @@ const STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_WITH_YOUR_KEY';
 
 // Read order data from URL params (set by index.html Buy Now button)
 const params    = new URLSearchParams(window.location.search);
-const promoType = params.get('promo') || 'B';        // 'A' = Buy1Get2, 'B' = Buy2Get4
-const kitQty    = parseInt(params.get('kits') || '1');
-const prices    = { A: 32.90, B: 49.90 };
-const labels    = { A: 'Compre 1, Leve 2', B: 'Compre 2, Leve 4' };
-const brasPerKit = { A: 2, B: 4 };
+const promoType = params.get('promo') || 'B';
+const prices    = { A: 98.90, B: 147.90, C: 197.90 };
+const labels    = { A: '1 Unidade', B: '2 Unidades', C: '3 Unidades' };
+const units     = { A: 1, B: 2, C: 3 };
+const freeShip  = { A: false, B: true, C: true };
 
-let shippingCost   = 0;
+let shippingCost   = freeShip[promoType] ? 0 : 19.90;
 let discountAmount = 0;
-let orderTotal     = prices[promoType] * kitQty;
+let orderTotal     = prices[promoType];
 let stripeObj      = null;
 let stripeElements = null;
 let currentStep    = 'info';
 
 // ── Init order summary panel ──────────────────────────────
 function initSummary() {
-    const totalBras = brasPerKit[promoType] * kitQty;
-    const label     = `${labels[promoType]} · ${kitQty} kit${kitQty > 1 ? 's' : ''}`;
-    const price     = '$' + (prices[promoType] * kitQty).toFixed(2);
+    const label = `${labels[promoType]} — Sutiã Hanna 3.0`;
+    const price = 'R$' + prices[promoType].toFixed(2).replace('.',',');
 
-    // Right panel
-    setEl('badge-qty', totalBras);
+    setEl('badge-qty', units[promoType]);
     setEl('item-var',  label);
     setEl('item-p',    price);
 
@@ -38,21 +36,23 @@ function setEl(id, val) {
     if (el) el.textContent = val;
 }
 
+function fmt(val) { return 'R$' + val.toFixed(2).replace('.',','); }
+
 function updateTotals() {
-    const sub   = prices[promoType] * kitQty;
+    const sub   = prices[promoType];
     const total = Math.max(0, sub + shippingCost - discountAmount);
 
-    setEl('r-subtotal', '$' + sub.toFixed(2));
-    setEl('r-total',    '$' + total.toFixed(2));
-    setEl('mob-total',  '$' + total.toFixed(2));
+    setEl('r-subtotal', fmt(sub));
+    setEl('r-total',    fmt(total));
+    setEl('mob-total',  fmt(total));
 
     const shippingEl = document.getElementById('r-shipping');
     if (shippingEl) {
         if (shippingCost === 0) {
-            shippingEl.textContent  = currentStep === 'info' ? 'Calculated at next step' : 'Grátis';
+            shippingEl.textContent  = freeShip[promoType] ? 'Grátis' : (currentStep === 'info' ? 'Calculado no próximo passo' : 'Grátis');
             shippingEl.className    = 'co-muted';
         } else {
-            shippingEl.textContent = '$' + shippingCost.toFixed(2);
+            shippingEl.textContent = fmt(shippingCost);
             shippingEl.className   = '';
         }
     }
@@ -85,9 +85,9 @@ function applyDiscount() {
 
     if (DISCOUNT_CODES[code]) {
         const pct   = DISCOUNT_CODES[code];
-        discountAmount = (prices[promoType] * kitQty) * pct;
+        discountAmount = prices[promoType] * pct;
 
-        setEl('r-discount', '-$' + discountAmount.toFixed(2));
+        setEl('r-discount', '-' + fmt(discountAmount));
         const row = document.getElementById('r-discount-row');
         if (row) row.classList.remove('hidden');
         updateTotals();
