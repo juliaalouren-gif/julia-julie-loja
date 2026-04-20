@@ -142,10 +142,19 @@
                                     <span class="save-badge">50% OFF</span>
                                 </div>
                                 <span class="bundle-desc">1 sutiã Hanna 3.0</span>
+                                <div class="bundle-selections promo-selections" id="selectionsA" style="display:none;">
+                                    <p class="selection-label">Quantas unidades?</p>
+                                    <div class="kit-qty-row">
+                                        <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('A',-1)">−</button>
+                                        <span class="kit-qty-val" id="qtyA">1</span>
+                                        <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('A',1)">+</button>
+                                        <span class="kit-qty-label" id="qtyLabelA">unidade</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="bundle-price">
-                                <span class="current-price">R$98,90</span>
-                                <span class="old-price">R$197,80</span>
+                                <span class="current-price" id="priceA">R$98,90</span>
+                                <span class="old-price" id="oldA">R$197,80</span>
                             </div>
                         </div>
 
@@ -162,10 +171,19 @@
                                     <span class="save-badge">25% OFF</span>
                                 </div>
                                 <span class="bundle-desc">2 sutiãs + <strong>Frete Grátis</strong></span>
+                                <div class="bundle-selections promo-selections" id="selectionsB" style="display:block;">
+                                    <p class="selection-label">Quantas unidades?</p>
+                                    <div class="kit-qty-row">
+                                        <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('B',-1)">−</button>
+                                        <span class="kit-qty-val" id="qtyB">1</span>
+                                        <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('B',1)">+</button>
+                                        <span class="kit-qty-label" id="qtyLabelB">kit (2 sutiãs)</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="bundle-price">
-                                <span class="current-price">R$147,90</span>
-                                <span class="old-price">R$197,80</span>
+                                <span class="current-price" id="priceB">R$147,90</span>
+                                <span class="old-price" id="oldB">R$197,80</span>
                             </div>
                         </div>
 
@@ -181,10 +199,19 @@
                                     <span class="save-badge">33% OFF</span>
                                 </div>
                                 <span class="bundle-desc">3 sutiãs + <strong>Frete Grátis</strong></span>
+                                <div class="bundle-selections promo-selections" id="selectionsC" style="display:none;">
+                                    <p class="selection-label">Quantas unidades?</p>
+                                    <div class="kit-qty-row">
+                                        <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('C',-1)">−</button>
+                                        <span class="kit-qty-val" id="qtyC">1</span>
+                                        <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('C',1)">+</button>
+                                        <span class="kit-qty-label" id="qtyLabelC">kit (3 sutiãs)</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="bundle-price">
-                                <span class="current-price">R$197,90</span>
-                                <span class="old-price">R$296,70</span>
+                                <span class="current-price" id="priceC">R$197,90</span>
+                                <span class="old-price" id="oldC">R$296,70</span>
                             </div>
                         </div>
 
@@ -621,20 +648,45 @@
     <!-- INTERACTIVITY & ANIMATIONS -->
     <script src="scripts.js"></script>
     <script>
-        const PROMO_PRICES = { A: 98.90, B: 147.90, C: 197.90 };
+        const PROMO_PRICES   = { A: 98.90,  B: 147.90, C: 197.90 };
+        const PROMO_OLD      = { A: 197.80, B: 197.80, C: 296.70 };
+        const PROMO_UNITS    = { A: 1,      B: 2,      C: 3 };
+        const qtyState       = { A: 1, B: 1, C: 1 };
 
-        function goToCheckout() {
-            const promo = document.querySelector('input[name="bundle"]:checked')?.value || 'B';
-            window.location.href = `checkout.html?promo=${promo}`;
+        function fmtBRL(v) { return 'R$' + v.toFixed(2).replace('.', ','); }
+
+        function updatePrice(promo) {
+            const n     = qtyState[promo];
+            const total = PROMO_PRICES[promo] * n;
+            const old   = PROMO_OLD[promo]   * n;
+            const units = PROMO_UNITS[promo] * n;
+            document.getElementById('price' + promo).textContent = fmtBRL(total);
+            document.getElementById('old'   + promo).textContent = fmtBRL(old);
+            document.getElementById('qty'   + promo).textContent = n;
+            const lbl = units === 1 ? '1 unidade' : `${n} kit${n > 1 ? 's' : ''} (${units} sutiãs)`;
+            document.getElementById('qtyLabel' + promo).textContent = lbl;
+        }
+
+        function changeQty(promo, delta) {
+            qtyState[promo] = Math.max(1, qtyState[promo] + delta);
+            updatePrice(promo);
         }
 
         function selectPromo(promo) {
             ['A','B','C'].forEach(p => {
                 document.getElementById('promo' + p).classList.remove('active');
                 document.getElementById('bundle' + p).checked = false;
+                document.getElementById('selections' + p).style.display = 'none';
             });
-            document.getElementById('promo' + promo).classList.add('active');
-            document.getElementById('bundle' + promo).checked = true;
+            document.getElementById('promo'      + promo).classList.add('active');
+            document.getElementById('bundle'     + promo).checked = true;
+            document.getElementById('selections' + promo).style.display = 'block';
+        }
+
+        function goToCheckout() {
+            const promo = document.querySelector('input[name="bundle"]:checked')?.value || 'B';
+            const qty   = qtyState[promo] || 1;
+            window.location.href = `checkout.html?promo=${promo}&qty=${qty}`;
         }
 
         selectPromo('B');

@@ -7,26 +7,29 @@ const STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_WITH_YOUR_KEY';
 // Read order data from URL params (set by index.html Buy Now button)
 const params    = new URLSearchParams(window.location.search);
 const promoType = params.get('promo') || 'B';
+const qty       = parseInt(params.get('qty') || '1');
 const prices    = { A: 98.90, B: 147.90, C: 197.90 };
 const labels    = { A: '1 Unidade', B: '2 Unidades', C: '3 Unidades' };
-const units     = { A: 1, B: 2, C: 3 };
+const unitsPerKit = { A: 1, B: 2, C: 3 };
 const freeShip  = { A: false, B: true, C: true };
 
 let shippingCost   = freeShip[promoType] ? 0 : 19.90;
 let discountAmount = 0;
-let orderTotal     = prices[promoType];
+let orderTotal     = prices[promoType] * qty;
 let stripeObj      = null;
 let stripeElements = null;
 let currentStep    = 'info';
 
 // ── Init order summary panel ──────────────────────────────
 function initSummary() {
-    const label = `${labels[promoType]} — Sutiã Hanna 3.0`;
-    const price = 'R$' + prices[promoType].toFixed(2).replace('.',',');
+    const totalUnits = unitsPerKit[promoType] * qty;
+    const label = qty > 1
+        ? `${labels[promoType]} × ${qty} — Sutiã Hanna 3.0`
+        : `${labels[promoType]} — Sutiã Hanna 3.0`;
 
-    setEl('badge-qty', units[promoType]);
+    setEl('badge-qty', totalUnits);
     setEl('item-var',  label);
-    setEl('item-p',    price);
+    setEl('item-p',    fmt(prices[promoType] * qty));
 
     updateTotals();
 }
@@ -39,7 +42,7 @@ function setEl(id, val) {
 function fmt(val) { return 'R$' + val.toFixed(2).replace('.',','); }
 
 function updateTotals() {
-    const sub   = prices[promoType];
+    const sub   = prices[promoType] * qty;
     const total = Math.max(0, sub + shippingCost - discountAmount);
 
     setEl('r-subtotal', fmt(sub));
@@ -85,7 +88,7 @@ function applyDiscount() {
 
     if (DISCOUNT_CODES[code]) {
         const pct   = DISCOUNT_CODES[code];
-        discountAmount = prices[promoType] * pct;
+        discountAmount = prices[promoType] * qty * pct;
 
         setEl('r-discount', '-' + fmt(discountAmount));
         const row = document.getElementById('r-discount-row');
