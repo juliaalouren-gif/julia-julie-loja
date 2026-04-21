@@ -105,13 +105,16 @@
                     </div>
 
                     <div class="option-group">
-                        <label class="option-label" id="sizeLabel">Tamanho: <strong>M</strong></label>
+                        <label class="option-label" id="sizeLabel">Tamanho: <strong>P</strong></label>
                         <div class="size-grid">
-                            <button class="size-btn active" onclick="selectSize(this, 'M')">M</button>
-                            <button class="size-btn" onclick="selectSize(this, 'L')">L</button>
+                            <button class="size-btn active" onclick="selectSize(this, 'P')">P</button>
+                            <button class="size-btn" onclick="selectSize(this, 'M')">M</button>
+                            <button class="size-btn" onclick="selectSize(this, 'G')">G</button>
+                            <button class="size-btn" onclick="selectSize(this, 'GG')">GG</button>
                             <button class="size-btn" onclick="selectSize(this, 'XL')">XL</button>
                             <button class="size-btn" onclick="selectSize(this, '2XL')">2XL</button>
                             <button class="size-btn" onclick="selectSize(this, '3XL')">3XL</button>
+                            <button class="size-btn" onclick="selectSize(this, '4XL')">4XL</button>
                         </div>
                         <a href="javascript:void(0)" class="size-chart-link" onclick="document.getElementById('sizeModal').style.display='flex'">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H3M16 2v4M8 2v4M3 6h18v16H3z"/></svg>
@@ -594,51 +597,60 @@
     <div id="sizeModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; padding:16px;">
         <div style="background:#fff; border-radius:12px; max-width:560px; width:100%; padding:28px 24px; position:relative; max-height:90vh; overflow-y:auto;">
             <button onclick="document.getElementById('sizeModal').style.display='none'" style="position:absolute; top:14px; right:16px; background:none; border:none; font-size:22px; cursor:pointer; color:#555;">&times;</button>
-            <h3 style="text-align:center; font-size:16px; font-weight:600; margin-bottom:16px; color:#222;">Tabela de Medidass</h3>
-            <p style="text-align:center; font-size:12px; color:#c97b9a; letter-spacing:1px; margin-bottom:16px;">METRIC</p>
+            <h3 style="text-align:center; font-size:16px; font-weight:600; margin-bottom:16px; color:#222;">Tabela de Medidas</h3>
+            <p style="text-align:center; font-size:12px; color:#c97b9a; letter-spacing:1px; margin-bottom:16px;">MEDIDAS EM CM</p>
             <table style="width:100%; border-collapse:collapse; font-size:13px;">
                 <thead>
                     <tr style="background:#f5f5f5;">
-                        <th style="padding:10px 12px; text-align:left; font-weight:700; color:#222; border-bottom:1px solid #e0e0e0;">SIZE</th>
-                        <th style="padding:10px 12px; text-align:left; font-weight:700; color:#222; border-bottom:1px solid #e0e0e0;">UNDERBUST</th>
-                        <th style="padding:10px 12px; text-align:left; font-weight:700; color:#222; border-bottom:1px solid #e0e0e0;">US</th>
-                        <th style="padding:10px 12px; text-align:left; font-weight:700; color:#222; border-bottom:1px solid #e0e0e0;">WEIGHT</th>
+                        <th style="padding:10px 12px; text-align:left; font-weight:700; color:#222; border-bottom:1px solid #e0e0e0;">TAMANHO</th>
+                        <th style="padding:10px 12px; text-align:left; font-weight:700; color:#222; border-bottom:1px solid #e0e0e0;">BUSTO (CM)</th>
+                        <th style="padding:10px 12px; text-align:left; font-weight:700; color:#222; border-bottom:1px solid #e0e0e0;">NÚMERO</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr style="border-bottom:1px solid #f0f0f0;">
-                        <td style="padding:10px 12px; font-weight:700;">M</td>
-                        <td style="padding:10px 12px; color:#444;">70cm - 75cm</td>
-                        <td style="padding:10px 12px; color:#444;">34B, 34C, 34D</td>
-                        <td style="padding:10px 12px; color:#444;">40kg - 50kg</td>
+                        <td style="padding:10px 12px; font-weight:700;">P</td>
+                        <td style="padding:10px 12px; color:#444;">90–95</td>
+                        <td style="padding:10px 12px; color:#444;">40</td>
                     </tr>
                     <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;">
-                        <td style="padding:10px 12px; font-weight:700;">L</td>
-                        <td style="padding:10px 12px; color:#444;">75cm - 80cm</td>
-                        <td style="padding:10px 12px; color:#444;">36B, 36C, 36D</td>
-                        <td style="padding:10px 12px; color:#444;">50kg - 60kg</td>
+                        <td style="padding:10px 12px; font-weight:700;">M</td>
+                        <td style="padding:10px 12px; color:#444;">95–100</td>
+                        <td style="padding:10px 12px; color:#444;">42</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #f0f0f0;">
+                        <td style="padding:10px 12px; font-weight:700;">G</td>
+                        <td style="padding:10px 12px; color:#444;">100–105</td>
+                        <td style="padding:10px 12px; color:#444;">44</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;">
+                        <td style="padding:10px 12px; font-weight:700;">GG</td>
+                        <td style="padding:10px 12px; color:#444;">105–110</td>
+                        <td style="padding:10px 12px; color:#444;">46</td>
                     </tr>
                     <tr style="border-bottom:1px solid #f0f0f0;">
                         <td style="padding:10px 12px; font-weight:700;">XL</td>
-                        <td style="padding:10px 12px; color:#444;">80cm - 85cm</td>
-                        <td style="padding:10px 12px; color:#444;">38B, 38C, 38D</td>
-                        <td style="padding:10px 12px; color:#444;">60kg - 70kg</td>
+                        <td style="padding:10px 12px; color:#444;">110–115</td>
+                        <td style="padding:10px 12px; color:#444;">48</td>
                     </tr>
                     <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;">
                         <td style="padding:10px 12px; font-weight:700;">2XL</td>
-                        <td style="padding:10px 12px; color:#444;">85cm - 90cm</td>
-                        <td style="padding:10px 12px; color:#444;">40B, 40C, 40D</td>
-                        <td style="padding:10px 12px; color:#444;">70kg - 80kg</td>
+                        <td style="padding:10px 12px; color:#444;">115–120</td>
+                        <td style="padding:10px 12px; color:#444;">50</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #f0f0f0;">
+                        <td style="padding:10px 12px; font-weight:700;">3XL</td>
+                        <td style="padding:10px 12px; color:#444;">120–125</td>
+                        <td style="padding:10px 12px; color:#444;">52</td>
                     </tr>
                     <tr style="background:#fafafa;">
-                        <td style="padding:10px 12px; font-weight:700;">3XL</td>
-                        <td style="padding:10px 12px; color:#444;">90cm - 95cm</td>
-                        <td style="padding:10px 12px; color:#444;">42B, 42C, 42D</td>
-                        <td style="padding:10px 12px; color:#444;">80kg - 90kg</td>
+                        <td style="padding:10px 12px; font-weight:700;">4XL</td>
+                        <td style="padding:10px 12px; color:#444;">125–130</td>
+                        <td style="padding:10px 12px; color:#444;">54</td>
                     </tr>
                 </tbody>
             </table>
-            <p style="font-size:12px; color:#666; margin-top:14px;">If your size is between these two, please size up.</p>
+            <p style="font-size:12px; color:#666; margin-top:14px;">Na dúvida entre dois tamanhos, escolha o maior.</p>
         </div>
     </div>
 
