@@ -41,7 +41,7 @@
 
         /* ── HEADER ── */
         .checkout-header {
-            background: var(--primary);
+            background: #ffffff;
             padding: 10px 20px;
             display: flex;
             align-items: center;
@@ -49,28 +49,23 @@
             position: sticky;
             top: 0;
             z-index: 200;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border-bottom: 1px solid var(--border);
         }
-        .header-logo {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: 0.5px;
-        }
-        .header-logo span { color: #f5c6da; font-weight: 300; }
+        .header-logo img { height: 40px; width: auto; object-fit: contain; display: block; }
         .secure-badge {
             display: flex;
             align-items: center;
             gap: 6px;
-            color: rgba(255,255,255,0.9);
+            color: var(--primary);
             font-size: 12px;
             font-weight: 500;
-            background: rgba(255,255,255,0.12);
+            background: var(--accent-light);
             padding: 6px 12px;
             border-radius: 20px;
+            border: 1px solid #f0d0de;
         }
-        .secure-badge i { color: #f5c6da; font-size: 11px; }
+        .secure-badge i { color: var(--accent); font-size: 11px; }
 
         /* ── OFFER BANNER ── */
         .offer-banner {
@@ -339,7 +334,7 @@
 </div>
 
 <header class="checkout-header">
-    <div class="header-logo">Julia &amp; Julie <span>Lingerie</span></div>
+    <div class="header-logo"><img src="logo.png" alt="Julia &amp; Julie Lingerie"></div>
     <div class="secure-badge"><i class="fas fa-lock"></i> Checkout Seguro</div>
 </header>
 
