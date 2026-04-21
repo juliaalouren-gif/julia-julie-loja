@@ -696,53 +696,33 @@
     let selectedShippingName = hasFreeShip ? 'Envio Padrão (Grátis)' : 'Envio Padrão';
 
     // ── SHIPPING OPTIONS (dinâmicas) ──────────────────────
+    function shippingOption(key, cost, costLabel, title, eta, selected, isFree) {
+        return `
+            <div class="shipping-option${selected ? ' selected' : ''}" data-shipping-key="${key}" onclick="selectShipping('${key}', ${cost}, '${title}')">
+                <div class="shipping-info">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <div>
+                        <span class="shipping-text">${title}</span>
+                        <span class="shipping-eta">${eta}</span>
+                    </div>
+                </div>
+                <span class="shipping-price"${isFree ? ' style="color:var(--accent)"' : ''}>${costLabel}</span>
+            </div>`;
+    }
+
     function buildShippingOptions() {
         const container = document.getElementById('shipping-options-container');
         if (!container) return;
         if (hasFreeShip) {
-            container.innerHTML = `
-                <div class="shipping-option selected" data-shipping-key="padrao" onclick="selectShipping('padrao', 0, 'Envio Padrão (Grátis)')">
-                    <div class="shipping-info">
-                        <div class="radio-circle"><div class="radio-inner"></div></div>
-                        <div>
-                            <span class="shipping-text">Envio Padrão</span>
-                            <span class="shipping-eta">Entrega em 7 a 15 dias úteis</span>
-                        </div>
-                    </div>
-                    <span class="shipping-price" style="color:var(--accent)">Grátis</span>
-                </div>
-                <div class="shipping-option" data-shipping-key="expresso" onclick="selectShipping('expresso', 19.90, 'Envio Expresso')">
-                    <div class="shipping-info">
-                        <div class="radio-circle"><div class="radio-inner"></div></div>
-                        <div>
-                            <span class="shipping-text">Envio Expresso</span>
-                            <span class="shipping-eta">Entrega em 3 a 5 dias úteis</span>
-                        </div>
-                    </div>
-                    <span class="shipping-price">R$ 19,90</span>
-                </div>`;
+            container.innerHTML =
+                shippingOption('padrao',   0,     'Grátis',     'Envio Padrão',   'Entrega em 7 a 18 dias úteis', true,  true)  +
+                shippingOption('sedex',    29.90, 'R$ 29,90',   'Envio Sedex',    'Entrega em 6 a 10 dias úteis', false, false) +
+                shippingOption('expresso', 59.90, 'R$ 59,90',   'Envio Expresso', 'Entrega em até 4 dias úteis',  false, false);
         } else {
-            container.innerHTML = `
-                <div class="shipping-option selected" data-shipping-key="padrao" onclick="selectShipping('padrao', 19.90, 'Envio Padrão')">
-                    <div class="shipping-info">
-                        <div class="radio-circle"><div class="radio-inner"></div></div>
-                        <div>
-                            <span class="shipping-text">Envio Padrão</span>
-                            <span class="shipping-eta">Entrega em 7 a 15 dias úteis</span>
-                        </div>
-                    </div>
-                    <span class="shipping-price">R$ 19,90</span>
-                </div>
-                <div class="shipping-option" data-shipping-key="expresso" onclick="selectShipping('expresso', 34.90, 'Envio Expresso')">
-                    <div class="shipping-info">
-                        <div class="radio-circle"><div class="radio-inner"></div></div>
-                        <div>
-                            <span class="shipping-text">Envio Expresso</span>
-                            <span class="shipping-eta">Entrega em 3 a 5 dias úteis</span>
-                        </div>
-                    </div>
-                    <span class="shipping-price">R$ 34,90</span>
-                </div>`;
+            container.innerHTML =
+                shippingOption('padrao',   19.90, 'R$ 19,90',   'Envio Padrão',   'Entrega em 7 a 18 dias úteis', true,  false) +
+                shippingOption('sedex',    39.90, 'R$ 39,90',   'Envio Sedex',    'Entrega em 6 a 10 dias úteis', false, false) +
+                shippingOption('expresso', 59.90, 'R$ 59,90',   'Envio Expresso', 'Entrega em até 4 dias úteis',  false, false);
         }
     }
     buildShippingOptions();
@@ -932,7 +912,7 @@
             document.getElementById('txt-sum-cep-2').textContent  = `CEP: ${cep}`;
         } else if (n === 3) {
             document.getElementById('txt-sum-ship-3').textContent = selectedShippingName;
-            const etaMap = { 'Envio Padrão (Grátis)': '7 a 15 dias úteis', 'Envio Padrão': '7 a 15 dias úteis', 'Envio Expresso': '3 a 5 dias úteis' };
+            const etaMap = { 'Envio Padrão (Grátis)': '7 a 18 dias úteis', 'Envio Padrão': '7 a 18 dias úteis', 'Envio Sedex': '6 a 10 dias úteis', 'Envio Expresso': 'até 4 dias úteis' };
             document.getElementById('txt-sum-eta-3').textContent = etaMap[selectedShippingName] || '7 a 15 dias úteis';
         }
 
