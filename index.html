@@ -560,39 +560,177 @@
     <footer class="footer">
         <div class="footer__inner container">
             <div class="footer__col">
-                <p style="font-weight: 300; font-size: 14px; max-width: 250px;">Lingerie feita por mulheres, para mulheres — com a missão de trazer conforto e beleza ao dia a dia.</p>
+                <p style="font-weight:600; font-size:15px; margin-bottom:6px;">Julia &amp; Julie Lingerie</p>
+                <p style="font-weight:300; font-size:13px; max-width:240px; line-height:1.6; color:#ccc;">Lingerie feita por mulheres, para mulheres — com a missão de trazer conforto e beleza ao dia a dia.</p>
+                <a href="https://wa.me/5521975605337?text=Olá!%20Acabei%20de%20realizar%20meu%20pedido%20e%20gostaria%20de%20suporte." target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; margin-top:14px; background:#25D366; color:#fff; font-size:13px; font-weight:600; padding:9px 16px; border-radius:50px; text-decoration:none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.533 5.849L.057 23.487a.5.5 0 00.611.627l5.79-1.519A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.371l-.36-.214-3.732.979.998-3.636-.234-.374A9.818 9.818 0 1112 21.818z"/></svg>
+                    Suporte via WhatsApp
+                </a>
             </div>
             <div class="footer__links">
                 <div class="footer__col">
                     <h4>Empresa</h4>
                     <ul>
-                        <li><a href="#">Sobre Nós</a></li>
-                        <li><a href="#">Contato</a></li>
-                        <li><a href="#">Trabalhe Conosco</a></li>
+                        <li><a href="#" onclick="openPolicy('sobre')">Sobre Nós</a></li>
+                        <li><a href="https://wa.me/5521975605337" target="_blank" rel="noopener">Contato</a></li>
+                        <li><a href="#" onclick="openPolicy('termos')">Termos de Serviço</a></li>
                     </ul>
                 </div>
                 <div class="footer__col">
-                    <h4>Ajuda</h4>
+                    <h4>Políticas</h4>
                     <ul>
-                        <li><a href="#">Returns & Exchanges</a></li>
-                        <li><a href="#">Shipping & Delivery</a></li>
-                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#" onclick="openPolicy('privacidade')">Política de Privacidade</a></li>
+                        <li><a href="#" onclick="openPolicy('reembolso')">Política de Reembolso</a></li>
+                        <li><a href="#" onclick="openPolicy('troca')">Troca e Devolução</a></li>
+                        <li><a href="#" onclick="openPolicy('entrega')">Prazo de Entrega</a></li>
                     </ul>
                 </div>
             </div>
         </div>
+
+        <!-- WhatsApp notice bar -->
+        <div style="background:#1a1a1a; border-top:1px solid #333; padding:12px 16px; text-align:center;">
+            <p style="margin:0; font-size:13px; color:#aaa;">
+                📦 Após realizar seu pedido, <strong style="color:#fff;">chame nosso suporte no WhatsApp</strong> para acompanhamento:
+                <a href="https://wa.me/5521975605337?text=Olá!%20Acabei%20de%20realizar%20meu%20pedido%20e%20gostaria%20de%20suporte." target="_blank" rel="noopener" style="color:#25D366; font-weight:700; text-decoration:none; margin-left:4px;">(21) 97560-5337</a>
+            </p>
+        </div>
+
         <div class="container">
             <div class="footer__bottom">
-                <p>&copy; 2026 Julia & Julie Lingerie. Todos os direitos reservados.</p>
-                <div class="payments">
-                    <img src="pay-visa.svg" alt="Visa" style="height:28px; object-fit:contain; filter:brightness(0) invert(1); opacity:0.85;">
-                    <img src="pay-mc.png" alt="Mastercard" style="height:28px; object-fit:contain; opacity:0.85;">
-                    <img src="pay-pp.png" alt="PayPal" style="height:28px; object-fit:contain; filter:brightness(0) invert(1); opacity:0.85;">
-                    <img src="pay-stripe.png" alt="Stripe" style="height:22px; object-fit:contain; filter:brightness(0) invert(1); opacity:0.85;">
+                <p>&copy; 2026 Julia &amp; Julie Lingerie. Todos os direitos reservados.</p>
+                <div class="payments" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <!-- Visa -->
+                    <svg width="52" height="32" viewBox="0 0 52 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:5px;">
+                        <rect width="52" height="32" rx="5" fill="#1A1F71"/>
+                        <text x="26" y="21" font-family="Arial" font-size="13" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">VISA</text>
+                    </svg>
+                    <!-- Mastercard -->
+                    <svg width="52" height="32" viewBox="0 0 52 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:5px;">
+                        <rect width="52" height="32" rx="5" fill="#252525"/>
+                        <circle cx="20" cy="16" r="9" fill="#EB001B"/>
+                        <circle cx="32" cy="16" r="9" fill="#F79E1B"/>
+                        <path d="M26 8.7a9 9 0 010 14.6A9 9 0 0126 8.7z" fill="#FF5F00"/>
+                    </svg>
+                    <!-- Mercado Pago -->
+                    <svg width="52" height="32" viewBox="0 0 52 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:5px;">
+                        <rect width="52" height="32" rx="5" fill="#009EE3"/>
+                        <text x="26" y="14" font-family="Arial" font-size="6" font-weight="700" fill="#FFFFFF" text-anchor="middle">MERCADO</text>
+                        <text x="26" y="22" font-family="Arial" font-size="6" font-weight="700" fill="#FFFFFF" text-anchor="middle">PAGO</text>
+                    </svg>
+                    <!-- PIX -->
+                    <svg width="52" height="32" viewBox="0 0 52 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:5px;">
+                        <rect width="52" height="32" rx="5" fill="#32BCAD"/>
+                        <text x="26" y="21" font-family="Arial" font-size="12" font-weight="900" fill="#FFFFFF" text-anchor="middle">PIX</text>
+                    </svg>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- MODAIS DE POLÍTICAS -->
+    <div id="policyModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:10000; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this)closePolicy()">
+        <div style="background:#fff; border-radius:12px; max-width:640px; width:100%; padding:32px 28px; position:relative; max-height:85vh; overflow-y:auto;">
+            <button onclick="closePolicy()" style="position:absolute; top:14px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:#555; line-height:1;">&times;</button>
+            <div id="policyContent"></div>
+        </div>
+    </div>
+
+    <script>
+    const policies = {
+        privacidade: `
+            <h2 style="font-family:'Tenor Sans',serif;color:#222;margin-bottom:16px;">Política de Privacidade</h2>
+            <p style="font-size:13px;color:#555;line-height:1.7;">A <strong>Julia &amp; Julie Lingerie</strong> respeita sua privacidade e está comprometida com a proteção dos seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
+            <h4 style="margin-top:18px;color:#333;">Dados que coletamos</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Nome, e-mail, endereço de entrega, telefone e dados de pagamento necessários para processar seu pedido. Não armazenamos dados de cartão de crédito.</p>
+            <h4 style="margin-top:18px;color:#333;">Como usamos seus dados</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Seus dados são utilizados exclusivamente para: processar e entregar seu pedido, enviar atualizações sobre o status da entrega, e responder dúvidas via WhatsApp ou e-mail.</p>
+            <h4 style="margin-top:18px;color:#333;">Compartilhamento com terceiros</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Somos uma loja de modelo <strong>dropshipping</strong>. Seu endereço de entrega é repassado ao fornecedor terceirizado responsável pelo envio do produto. Não vendemos seus dados a terceiros.</p>
+            <h4 style="margin-top:18px;color:#333;">Seus direitos</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento pelo WhatsApp <a href="https://wa.me/5521975605337" style="color:#c97b9a;">(21) 97560-5337</a>.</p>`,
+
+        reembolso: `
+            <h2 style="font-family:'Tenor Sans',serif;color:#222;margin-bottom:16px;">Política de Reembolso</h2>
+            <p style="font-size:13px;color:#555;line-height:1.7;">A <strong>Julia &amp; Julie Lingerie</strong> opera no modelo <strong>dropshipping</strong>, ou seja, seus pedidos são processados e enviados por fornecedores terceirizados parceiros.</p>
+            <h4 style="margin-top:18px;color:#333;">Quando o reembolso é aceito</h4>
+            <ul style="font-size:13px;color:#555;line-height:2;padding-left:18px;">
+                <li>Produto não entregue dentro do prazo máximo informado</li>
+                <li>Produto chegou com defeito de fabricação</li>
+                <li>Produto divergente do anunciado</li>
+            </ul>
+            <h4 style="margin-top:18px;color:#333;">Como solicitar</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Entre em contato pelo WhatsApp <a href="https://wa.me/5521975605337" style="color:#c97b9a;">(21) 97560-5337</a> em até <strong>7 dias corridos</strong> após o recebimento do produto (ou após o prazo máximo de entrega), com foto ou vídeo do problema.</p>
+            <h4 style="margin-top:18px;color:#333;">Prazo de reembolso</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Após aprovação, o reembolso é processado em até <strong>5 dias úteis</strong> na mesma forma de pagamento utilizada.</p>`,
+
+        troca: `
+            <h2 style="font-family:'Tenor Sans',serif;color:#222;margin-bottom:16px;">Troca e Devolução</h2>
+            <p style="font-size:13px;color:#555;line-height:1.7;">A <strong>Julia &amp; Julie Lingerie</strong> opera no modelo <strong>dropshipping</strong>. Os produtos são enviados diretamente pelo fornecedor terceirizado, portanto o processo de troca segue as diretrizes abaixo.</p>
+            <h4 style="margin-top:18px;color:#333;">Trocas aceitas</h4>
+            <ul style="font-size:13px;color:#555;line-height:2;padding-left:18px;">
+                <li>Tamanho errado (sujeito à disponibilidade de estoque)</li>
+                <li>Produto com defeito de fabricação</li>
+                <li>Produto diferente do pedido</li>
+            </ul>
+            <h4 style="margin-top:18px;color:#333;">Condições</h4>
+            <ul style="font-size:13px;color:#555;line-height:2;padding-left:18px;">
+                <li>Solicitação em até <strong>7 dias corridos</strong> após o recebimento</li>
+                <li>Produto sem uso, com etiqueta original intacta</li>
+                <li>Envio de foto ou vídeo comprovando o motivo da troca</li>
+            </ul>
+            <h4 style="margin-top:18px;color:#333;">Como solicitar</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Entre em contato via WhatsApp <a href="https://wa.me/5521975605337" style="color:#c97b9a;">(21) 97560-5337</a> com o número do pedido e as fotos/vídeos do produto.</p>`,
+
+        entrega: `
+            <h2 style="font-family:'Tenor Sans',serif;color:#222;margin-bottom:16px;">Prazo de Entrega</h2>
+            <p style="font-size:13px;color:#555;line-height:1.7;">A <strong>Julia &amp; Julie Lingerie</strong> funciona no modelo <strong>dropshipping</strong>: após a confirmação do pagamento, seu pedido é repassado ao nosso fornecedor terceirizado, que realiza o envio diretamente para você.</p>
+            <h4 style="margin-top:18px;color:#333;">Prazo estimado</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">O prazo de entrega é uma <strong>projeção</strong> baseada no histórico de envios e pode variar de acordo com sua região e a disponibilidade do fornecedor:</p>
+            <ul style="font-size:13px;color:#555;line-height:2;padding-left:18px;">
+                <li><strong>Regiões Sul e Sudeste:</strong> 7 a 15 dias úteis</li>
+                <li><strong>Demais regiões:</strong> 10 a 20 dias úteis</li>
+            </ul>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Esses prazos são estimativas e podem sofrer variações por fatores externos como volume dos Correios, feriados ou situações climáticas.</p>
+            <h4 style="margin-top:18px;color:#333;">Acompanhe seu pedido</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Após o envio, você receberá o código de rastreio. Para dúvidas, fale com a gente pelo WhatsApp <a href="https://wa.me/5521975605337" style="color:#c97b9a;">(21) 97560-5337</a>.</p>`,
+
+        termos: `
+            <h2 style="font-family:'Tenor Sans',serif;color:#222;margin-bottom:16px;">Termos de Serviço</h2>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Ao realizar uma compra na <strong>Julia &amp; Julie Lingerie</strong>, você concorda com os termos descritos abaixo.</p>
+            <h4 style="margin-top:18px;color:#333;">Modelo de negócio</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Somos uma loja no modelo <strong>dropshipping</strong>. Os produtos são adquiridos de fornecedores terceirizados e enviados diretamente ao consumidor. Os prazos de entrega são projeções e podem variar.</p>
+            <h4 style="margin-top:18px;color:#333;">Preços e pagamentos</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Os preços são exibidos em Reais (R$) e podem ser alterados sem aviso prévio. O pedido é confirmado apenas após a aprovação do pagamento.</p>
+            <h4 style="margin-top:18px;color:#333;">Responsabilidade</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">A Julia &amp; Julie Lingerie não se responsabiliza por atrasos causados por transportadoras, Correios ou eventos fora do nosso controle.</p>
+            <h4 style="margin-top:18px;color:#333;">Contato</h4>
+            <p style="font-size:13px;color:#555;line-height:1.7;">Dúvidas? Fale conosco via WhatsApp <a href="https://wa.me/5521975605337" style="color:#c97b9a;">(21) 97560-5337</a>.</p>`,
+
+        sobre: `
+            <h2 style="font-family:'Tenor Sans',serif;color:#222;margin-bottom:16px;">Sobre Nós</h2>
+            <p style="font-size:13px;color:#555;line-height:1.7;">A <strong>Julia &amp; Julie Lingerie</strong> nasceu da vontade de oferecer lingerie de alta qualidade, conforto real e sustentação para mulheres de todos os tipos de corpo.</p>
+            <p style="font-size:13px;color:#555;line-height:1.7;margin-top:12px;">Trabalhamos com fornecedores selecionados que compartilham nossa visão de qualidade. Nosso modelo de negócio <strong>dropshipping</strong> nos permite oferecer produtos premium com preços acessíveis, eliminando intermediários e entregando direto na sua porta.</p>
+            <p style="font-size:13px;color:#555;line-height:1.7;margin-top:12px;">Dúvidas ou sugestões? Fale conosco pelo WhatsApp <a href="https://wa.me/5521975605337" style="color:#c97b9a;">(21) 97560-5337</a>.</p>`
+    };
+
+    function openPolicy(key) {
+        const modal = document.getElementById('policyModal');
+        document.getElementById('policyContent').innerHTML = policies[key] || '';
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        return false;
+    }
+
+    function closePolicy() {
+        document.getElementById('policyModal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closePolicy();
+    });
+    </script>
 
     <!-- MODAL TABELA DE MEDIDAS -->
     <div id="sizeModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; padding:16px;">
