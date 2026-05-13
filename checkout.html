@@ -320,8 +320,8 @@
         /* ── FOOTER ── */
         .checkout-footer { background: var(--primary); padding: 28px 20px; text-align: center; margin-top: 28px; }
         .footer-content { max-width: 680px; margin: 0 auto; }
-        .footer-payment-btn { background: none; border: 1.5px solid rgba(255,255,255,0.4); color: rgba(255,255,255,0.9); border-radius: 20px; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 8px; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
-        .footer-payment-btn:hover { background: rgba(255,255,255,0.1); }
+        .footer-payment-btn { background: none; border: none; color: rgba(255,255,255,0.9); padding: 0; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 6px; font-family: 'Poppins', sans-serif; text-decoration: underline; text-underline-offset: 3px; }
+        .footer-payment-btn:hover { color: #fff; }
         .footer-policies-notice { font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 14px; line-height: 1.5; }
         .footer-legal { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 500; }
         .payment-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; padding: 16px; }
@@ -705,10 +705,6 @@
                     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M242.4 292.5C247.8 287.1 255.1 284.4 262.5 284.4s14.7 2.7 20.1 8.1L364.1 374.9c5.4 5.4 8.1 12.7 8.1 20.1s-2.7 14.7-8.1 20.1L282.6 496.6c-5.4 5.4-12.7 8.1-20.1 8.1s-14.7-2.7-20.1-8.1L148 412.1C135.5 399.6 135.5 379.3 148 366.9L242.4 292.5zM148 145.1c12.5-12.5 32.8-12.5 45.3 0L276.9 228.5c5.4 5.4 8.1 12.7 8.1 20.1s-2.7 14.7-8.1 20.1L148 396.9c-12.5 12.5-32.8 12.5-45.3 0L15.4 309.6C2.9 297.1 2.9 276.8 15.4 264.3L148 145.1zM364.1 145.1L496.6 264.3c12.5 12.5 12.5 32.8 0 45.3L364.1 396.9c-12.5 12.5-32.8 12.5-45.3 0L236.3 309.6C223.8 297.1 223.8 276.8 236.3 264.3L364.1 145.1c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
                 </div>
                 <span>Pix</span>
-            </div>
-            <div class="pay-icon-item">
-                <img src="pay-stripe.png" alt="Stripe" style="height:28px;">
-                <span>Stripe</span>
             </div>
         </div>
     </div>
