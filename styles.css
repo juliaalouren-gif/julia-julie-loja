@@ -242,11 +242,11 @@
         }
         .swatch.active { border-color: var(--rosa-principal); outline-color: var(--rosa-principal); }
 
-        .size-grid { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+        .size-grid { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
         .size-btn {
-            width: 44px; height: 44px; background: #fff; border: 1.5px solid var(--cinza-medio);
-            border-radius: 8px; font-weight: 600; font-size: 14px; color: var(--preto-suave);
-            display: flex; align-items: center; justify-content: center;
+            min-width: 64px; height: 40px; padding: 0 10px; background: #fff; border: 1.5px solid var(--cinza-medio);
+            border-radius: 8px; font-weight: 600; font-size: 11px; color: var(--preto-suave);
+            display: flex; align-items: center; justify-content: center; white-space: nowrap;
         }
         .size-btn:hover { border-color: var(--rosa-principal); }
         .size-btn.active { border-color: var(--rosa-escuro); background: var(--rosa-escuro); color: #fff; }
