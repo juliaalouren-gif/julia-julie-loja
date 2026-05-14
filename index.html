@@ -21,7 +21,7 @@
     <!-- 02. HEADER -->
     <header class="header">
         <div class="header__inner container">
-            <button class="icon-btn mobile-menu-icon" onclick="document.getElementById('sideMenu').classList.add('open')">☰</button>
+            <button class="icon-btn mobile-menu-icon" onclick="openMenu()">☰</button>
             <a href="#" class="header__logo"><img src="logo.png" alt="Julia & Julie" class="header__logo-img"></a>
             <nav class="header__nav">
                 <ul>
@@ -837,13 +837,13 @@
     </script>
 
 <!-- SIDE MENU OVERLAY -->
-<div id="sideMenuOverlay" onclick="document.getElementById('sideMenu').classList.remove('open');this.classList.remove('open')" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:8000; opacity:0; transition:opacity 0.3s;"></div>
+<div id="sideMenuOverlay" onclick="closeMenu()" style="position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:8000; display:none;"></div>
 
 <!-- SIDE MENU -->
 <div id="sideMenu" style="position:fixed; top:0; left:-320px; width:300px; height:100%; background:#fff; z-index:8001; box-shadow:4px 0 24px rgba(0,0,0,0.18); transition:left 0.3s ease; display:flex; flex-direction:column; font-family:'Poppins',sans-serif;">
     <div style="background:var(--rosa-escuro); padding:20px 20px 16px; display:flex; align-items:center; justify-content:space-between;">
         <img src="logo.png" alt="Julia & Julie" style="height:32px; filter:brightness(0) invert(1);">
-        <button onclick="document.getElementById('sideMenu').classList.remove('open')" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer; line-height:1;">&times;</button>
+        <button onclick="closeMenu()" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer; line-height:1;">&times;</button>
     </div>
     <div style="padding:24px 20px; flex:1;">
         <a href="https://wa.me/5521975605337" target="_blank" style="display:flex; align-items:center; gap:12px; padding:16px; background:#f0faf5; border-radius:12px; text-decoration:none; margin-bottom:12px; border:1px solid #c3e6d4;">
@@ -853,7 +853,7 @@
                 <div style="font-size:12px; color:#555;">Clique aqui para falar conosco</div>
             </div>
         </a>
-        <button onclick="document.getElementById('sideMenu').classList.remove('open'); document.getElementById('soldOutModal').classList.add('open')" style="display:flex; align-items:center; gap:12px; padding:16px; background:#fdf4f7; border-radius:12px; border:1px solid #f0d0de; width:100%; cursor:pointer; text-align:left;">
+        <button onclick="closeMenu(); document.getElementById('soldOutModal').classList.add('open')" style="display:flex; align-items:center; gap:12px; padding:16px; background:#fdf4f7; border-radius:12px; border:1px solid #f0d0de; width:100%; cursor:pointer; text-align:left;">
             <span style="font-size:24px;">👗</span>
             <div>
                 <div style="font-weight:700; font-size:14px; color:var(--rosa-escuro);">Ver outros produtos</div>
@@ -884,21 +884,17 @@
 
 <style>
     #sideMenu.open { left: 0; }
-    #sideMenu.open ~ #sideMenuOverlay,
     #soldOutModal.open { display: flex; }
-    #sideMenuOverlay.open { display:block; opacity:1; }
 </style>
 <script>
-    document.getElementById('sideMenu').addEventListener('transitionend', function() {
-        var overlay = document.getElementById('sideMenuOverlay');
-        if (this.classList.contains('open')) {
-            overlay.style.display = 'block';
-            setTimeout(function(){ overlay.style.opacity = '1'; }, 10);
-        } else {
-            overlay.style.opacity = '0';
-            setTimeout(function(){ overlay.style.display = 'none'; }, 300);
-        }
-    });
+    function openMenu() {
+        document.getElementById('sideMenu').classList.add('open');
+        document.getElementById('sideMenuOverlay').style.display = 'block';
+    }
+    function closeMenu() {
+        document.getElementById('sideMenu').classList.remove('open');
+        document.getElementById('sideMenuOverlay').style.display = 'none';
+    }
 </script>
 </body>
 </html>

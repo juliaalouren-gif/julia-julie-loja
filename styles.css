@@ -121,11 +121,11 @@
         }
         .header__nav a:hover { color: var(--rosa-principal); }
         .header__actions { display: flex; gap: 16px; align-items: center; }
-        .icon-btn { background: none; font-size: 24px; color: var(--preto-suave); }
+        .icon-btn { background: none; border: none; font-size: 24px; color: var(--preto-suave); cursor: pointer; }
+        .mobile-menu-icon { display: block !important; }
 
         @media (min-width: 768px) {
             .header__nav { display: block; }
-            .mobile-menu-icon { display: none; }
         }
 
         /* 03. Product Section */
