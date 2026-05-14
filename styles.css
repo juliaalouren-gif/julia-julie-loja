@@ -30,7 +30,7 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--branco-fundo);
             color: var(--preto-texto);
-            padding-bottom: 70px; /* Space for sticky cta on mobile */
+            padding-bottom: 0;
             -webkit-overflow-scrolling: touch;
         }
 
