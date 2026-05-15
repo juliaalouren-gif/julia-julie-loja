@@ -851,7 +851,7 @@
 <div id="sideMenuOverlay" onclick="closeMenu()" style="position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:8000; display:none;"></div>
 
 <!-- SIDE MENU -->
-<div id="sideMenu" style="position:fixed; top:0; left:-320px; width:300px; height:100%; background:#fff; z-index:8001; box-shadow:4px 0 24px rgba(0,0,0,0.18); transition:left 0.3s ease; display:flex; flex-direction:column; font-family:'Poppins',sans-serif;">
+<div id="sideMenu" style="position:fixed; top:0; left:-320px; width:300px; height:100%; background:#fff; z-index:8001; box-shadow:4px 0 24px rgba(0,0,0,0.18); transition:left 0.3s ease; display:flex; flex-direction:column; font-family:'Poppins',sans-serif; overflow-y:auto;">
     <div style="background:var(--rosa-escuro); padding:20px 20px 16px; display:flex; align-items:center; justify-content:space-between;">
         <img src="logo.png" alt="Julia & Julie" style="height:32px; filter:brightness(0) invert(1);">
         <button onclick="closeMenu()" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer; line-height:1;">&times;</button>
@@ -899,11 +899,11 @@
 </style>
 <script>
     function openMenu() {
-        document.getElementById('sideMenu').classList.add('open');
+        document.getElementById('sideMenu').style.left = '0';
         document.getElementById('sideMenuOverlay').style.display = 'block';
     }
     function closeMenu() {
-        document.getElementById('sideMenu').classList.remove('open');
+        document.getElementById('sideMenu').style.left = '-320px';
         document.getElementById('sideMenuOverlay').style.display = 'none';
     }
 </script>
