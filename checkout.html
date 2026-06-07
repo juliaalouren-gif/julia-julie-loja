@@ -1065,7 +1065,7 @@
         const [expMonth, expYear2d] = expiry.split('/');
         const expYear = '20' + expYear2d;
         const cpfDigits = document.getElementById('cust-cpf').value.replace(/\D/g, '');
-        const totalPrice = basePrice + selectedShippingPrice;
+        const totalPrice = Math.round((basePrice + selectedShippingPrice) * 100) / 100;
 
         document.getElementById('loading-overlay').classList.add('active');
         try {
@@ -1123,7 +1123,7 @@
     async function payWithPix() {
         if (!validateStep1() || !validateStep2()) return;
         document.getElementById('loading-overlay').classList.add('active');
-        const totalPrice = (basePrice + selectedShippingPrice) * 0.95;
+        const totalPrice = Math.round((basePrice + selectedShippingPrice) * 0.95 * 100) / 100;
         try {
             const res = await fetch('/api/process-payment', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },

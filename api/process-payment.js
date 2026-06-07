@@ -24,8 +24,13 @@ module.exports = async (req, res) => {
 
         const isPix = paymentMethodId === 'pix';
 
+        const amount = Math.round(parseFloat(totalPrice) * 100) / 100;
+        if (!amount || isNaN(amount) || amount <= 0) {
+            return res.status(400).json({ error: 'Valor inválido: ' + totalPrice });
+        }
+
         const mpBody = {
-            transaction_amount: parseFloat(totalPrice),
+            transaction_amount: amount,
             description: `Julia & Julie - Kit ${promo} (${quantity} un)`,
             payment_method_id: isPix ? 'pix' : cardPaymentMethodId || 'visa',
             payer: {
