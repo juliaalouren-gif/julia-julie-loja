@@ -1,4 +1,3 @@
-const fetch = require('node-fetch');
 
 const SUPABASE_URL  = process.env.SUPABASE_URL;
 const SUPABASE_KEY  = process.env.SUPABASE_SERVICE_KEY;

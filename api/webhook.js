@@ -1,4 +1,3 @@
-const fetch = require('node-fetch');
 
 const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
 const SUPABASE_URL    = process.env.SUPABASE_URL;
