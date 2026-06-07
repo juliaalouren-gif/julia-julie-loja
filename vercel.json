@@ -3,8 +3,5 @@
     { "source": "/checkout", "destination": "/checkout.html" },
     { "source": "/success", "destination": "/success.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" }
-  ],
-  "functions": {
-    "api/*.js": { "runtime": "nodejs20.x" }
-  }
+  ]
 }
