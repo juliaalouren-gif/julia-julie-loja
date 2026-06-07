@@ -3,102 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido Confirmado — Julia & Julie</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Aguardando Pagamento — Julia & Julie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing:border-box; margin:0; padding:0; }
-        body { font-family:'Poppins',sans-serif; background:#fdf7fa; color:#333; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 20px; }
-        .card { background:#fff; border-radius:20px; padding:40px 32px; max-width:500px; width:100%; text-align:center; box-shadow:0 4px 30px rgba(201,123,154,0.12); }
-        .icon { font-size:56px; margin-bottom:16px; }
-        h1 { font-size:22px; font-weight:700; color:#222; margin-bottom:8px; }
-        .sub { font-size:14px; color:#888; line-height:1.6; margin-bottom:24px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px 20px 48px;
+        }
 
-        /* PIX section */
-        .pix-box { background:#f8f3f6; border-radius:14px; padding:24px 20px; margin-bottom:20px; }
-        .pix-box p { font-size:13px; color:#666; margin-bottom:12px; }
-        .pix-box img { width:180px; height:180px; border-radius:10px; border:2px solid #e8d5e0; margin-bottom:16px; }
-        .pix-copy-row { display:flex; gap:8px; align-items:center; }
-        .pix-copy-row input { flex:1; font-size:11px; padding:9px 12px; border:1.5px solid #e8d5e0; border-radius:8px; font-family:monospace; color:#555; outline:none; }
-        .btn-copy { padding:9px 16px; background:#7a3050; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; font-family:'Poppins',sans-serif; white-space:nowrap; }
-        .copied { color:#1a7a4a; font-size:12px; margin-top:6px; display:none; }
-        .pix-timer { margin-top:14px; background:#fff8f0; border-radius:8px; padding:10px 14px; font-size:13px; color:#e67e00; border:1px solid #ffd580; }
+        .logo { height: 48px; object-fit: contain; margin-bottom: 28px; }
 
-        /* Card approved */
-        .approved-box { background:#f0faf5; border-radius:14px; padding:20px; margin-bottom:20px; font-size:14px; color:#1a7a4a; border:1px solid #c3e6d4; }
+        .icon-wrap {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            background: #fde8f0;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+        }
+        .icon-wrap svg { width: 36px; height: 36px; }
 
-        .btn-home { display:inline-block; background:#7a3050; color:#fff; padding:13px 36px; border-radius:50px; font-size:14px; font-weight:600; text-decoration:none; margin-top:8px; font-family:'Poppins',sans-serif; }
-        .btn-home:hover { background:#6a2040; }
-        .order-ref { font-size:12px; color:#bbb; margin-top:16px; }
+        h1 { font-size: 22px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; text-align: center; }
+        .sub { font-size: 14px; color: #666; text-align: center; margin-bottom: 24px; }
+
+        /* Timer section */
+        .timer-section { text-align: center; margin-bottom: 20px; }
+        .timer-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #fff8e7; border-radius: 6px; padding: 6px 14px;
+            font-size: 12px; font-weight: 700; color: #b45309;
+            letter-spacing: 0.5px; text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .countdown {
+            font-size: 52px; font-weight: 800; color: #1a1a1a;
+            letter-spacing: -1px; line-height: 1;
+            margin-bottom: 6px;
+        }
+        .timer-hint { font-size: 13px; color: #666; }
+
+        /* MP logo line */
+        .mp-line {
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; font-size: 13px; color: #999;
+            margin-bottom: 24px;
+        }
+        .mp-line img { height: 22px; }
+
+        /* QR card */
+        .qr-card {
+            width: 100%; max-width: 420px;
+            border: 1.5px dashed #d0d0d0;
+            border-radius: 16px;
+            padding: 28px 24px;
+            display: flex; flex-direction: column; align-items: center;
+            margin-bottom: 16px;
+        }
+        .qr-card img {
+            width: 220px; height: 220px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .qr-code-text {
+            width: 100%;
+            font-size: 11px; color: #555;
+            word-break: break-all;
+            background: #f7f7f7;
+            border-radius: 8px;
+            padding: 12px 14px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            font-family: monospace;
+            text-align: center;
+            border: 1px solid #eee;
+            cursor: text;
+            user-select: all;
+        }
+        .btn-copy {
+            width: 100%;
+            padding: 16px;
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            transition: background 0.2s;
+        }
+        .btn-copy:hover { background: #333; }
+        .copied-toast {
+            font-size: 13px; color: #1a7a4a;
+            margin-top: 8px; display: none; font-weight: 600;
+        }
+
+        /* Auto update text */
+        .auto-txt { font-size: 13px; color: #999; text-align: center; margin-bottom: 20px; }
+
+        /* Back button */
+        .btn-home {
+            display: block; width: 100%; max-width: 420px;
+            padding: 15px;
+            background: transparent;
+            color: #7a3050;
+            border: 2px solid #7a3050;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-home:hover { background: #7a3050; color: #fff; }
+
+        /* Card approved / pending fallback */
+        .status-card {
+            width: 100%; max-width: 420px;
+            text-align: center;
+        }
+        .approved-badge {
+            background: #e8f5e9; color: #1a7a4a;
+            border-radius: 50%; width: 80px; height: 80px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; margin: 0 auto 20px;
+        }
+        .approved-box {
+            background: #f0faf5; border: 1px solid #c3e6d4;
+            border-radius: 12px; padding: 16px;
+            font-size: 14px; color: #1a7a4a;
+            font-weight: 600; margin-bottom: 24px;
+        }
     </style>
 </head>
 <body>
-<div class="card" id="card-pix" style="display:none">
-    <div class="icon">🔑</div>
-    <h1>Quase lá! Finalize o PIX</h1>
-    <p class="sub">Escaneie o QR Code ou copie o código abaixo para pagar. Seu pedido será confirmado automaticamente após o pagamento.</p>
-    <div class="pix-box">
-        <img id="pix-img" src="" alt="QR Code PIX" style="display:none">
-        <p>Ou copie o código PIX:</p>
-        <div class="pix-copy-row">
-            <input id="pix-code" type="text" readonly>
-            <button class="btn-copy" onclick="copyPix()">Copiar</button>
-        </div>
-        <div class="copied" id="copied-msg">✓ Copiado!</div>
-        <div class="pix-timer">⏱ O PIX expira em <strong>30 minutos</strong>.</div>
+
+<img src="logo.png" alt="Julia & Julie" class="logo">
+
+<!-- PIX VIEW -->
+<div id="view-pix" style="display:none; width:100%; max-width:420px; display:none; flex-direction:column; align-items:center;">
+
+    <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7a3050" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+        </svg>
     </div>
-    <p style="font-size:13px;color:#888;margin-bottom:16px;">Após pagar, clique abaixo para confirmar.</p>
-    <a href="index.html" class="btn-home">✓ Já paguei, voltar à loja</a>
-    <div class="order-ref" id="ref-pix"></div>
+
+    <h1>Aguardando Pagamento</h1>
+    <p class="sub">Para finalizar, pague o Pix abaixo:</p>
+
+    <div class="timer-section">
+        <div class="timer-badge">⚠️ PAGUE AGORA — CÓDIGO EXPIRANDO</div>
+        <div class="countdown" id="countdown">10:00</div>
+        <p class="timer-hint">Finalize seu pagamento antes que o código Pix expire!</p>
+    </div>
+
+    <div class="mp-line">
+        Pagamento processado por
+        <img src="https://http2.mlstatic.com/frontend-assets/mp-brand/mp-logo.svg" alt="Mercado Pago" onerror="this.style.display='none'">
+    </div>
+
+    <div class="qr-card">
+        <img id="pix-img" src="" alt="QR Code PIX" style="display:none">
+        <div class="qr-code-text" id="pix-code-display"></div>
+        <button class="btn-copy" onclick="copyPix()">Copiar Código PIX</button>
+        <div class="copied-toast" id="copied-toast">✓ Código copiado!</div>
+    </div>
+
+    <p class="auto-txt">O status será atualizado automaticamente após o pagamento.</p>
+    <a href="/" class="btn-home">Ir para página inicial</a>
 </div>
 
-<div class="card" id="card-ok" style="display:none">
-    <div class="icon">✅</div>
-    <h1>Pedido confirmado!</h1>
-    <p class="sub">Seu pagamento foi aprovado. Você receberá um e-mail de confirmação em breve.</p>
+<!-- APPROVED VIEW -->
+<div id="view-ok" style="display:none; width:100%; max-width:420px; text-align:center;">
+    <div class="approved-badge">✅</div>
+    <h1 style="margin-bottom:8px;">Pedido confirmado!</h1>
+    <p class="sub" style="margin-bottom:20px;">Seu pagamento foi aprovado. Em breve você recebe a confirmação por e-mail.</p>
     <div class="approved-box">🎉 Pagamento aprovado com sucesso!</div>
-    <a href="index.html" class="btn-home">Voltar à loja</a>
-    <div class="order-ref" id="ref-ok"></div>
+    <a href="/" class="btn-home">Ir para página inicial</a>
 </div>
 
-<div class="card" id="card-pending" style="display:none">
-    <div class="icon">⏳</div>
-    <h1>Aguardando pagamento</h1>
-    <p class="sub">Seu pedido está sendo processado. Assim que o pagamento for confirmado, você receberá um e-mail.</p>
-    <a href="index.html" class="btn-home">Voltar à loja</a>
+<!-- PENDING FALLBACK VIEW -->
+<div id="view-pending" style="display:none; width:100%; max-width:420px; text-align:center;">
+    <div class="icon-wrap" style="margin:0 auto 20px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7a3050" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+        </svg>
+    </div>
+    <h1 style="margin-bottom:8px;">Aguardando confirmação</h1>
+    <p class="sub" style="margin-bottom:24px;">Seu pedido está sendo processado. Assim que o pagamento for confirmado, você receberá um e-mail.</p>
+    <a href="/" class="btn-home">Ir para página inicial</a>
 </div>
 
 <script>
-const p = new URLSearchParams(window.location.search);
-const type   = p.get('type');
-const status = p.get('status');
-const id     = p.get('id');
-const qr     = p.get('qr_code');
-const qrB64  = p.get('qr_code_base64');
-const total  = p.get('total');
+const p        = new URLSearchParams(window.location.search);
+const type     = p.get('type');
+const status   = p.get('status');
+const qr       = p.get('qr_code');
+const qrB64    = p.get('qr_code_base64');
+const pixCode  = document.getElementById('pix-code-display');
+const pixImg   = document.getElementById('pix-img');
 
 if (type === 'pix' && qr) {
-    document.getElementById('card-pix').style.display = 'block';
-    document.getElementById('pix-code').value = qr;
+    const view = document.getElementById('view-pix');
+    view.style.display = 'flex';
+
     if (qrB64) {
-        const img = document.getElementById('pix-img');
-        img.src = 'data:image/png;base64,' + qrB64;
-        img.style.display = 'block';
+        pixImg.src = 'data:image/png;base64,' + decodeURIComponent(qrB64);
+        pixImg.style.display = 'block';
     }
-    if (id) document.getElementById('ref-pix').textContent = 'Referência: JJ-' + id;
+    pixCode.textContent = decodeURIComponent(qr);
+
+    // Countdown 10 min
+    let secs = 10 * 60;
+    const el = document.getElementById('countdown');
+    const tick = setInterval(() => {
+        secs--;
+        if (secs <= 0) { clearInterval(tick); el.textContent = '00:00'; return; }
+        const m = String(Math.floor(secs / 60)).padStart(2, '0');
+        const s = String(secs % 60).padStart(2, '0');
+        el.textContent = m + ':' + s;
+    }, 1000);
+
 } else if (type === 'card' || status === 'approved') {
-    document.getElementById('card-ok').style.display = 'block';
-    if (id) document.getElementById('ref-ok').textContent = 'Referência: JJ-' + id;
+    document.getElementById('view-ok').style.display = 'block';
 } else {
-    document.getElementById('card-pending').style.display = 'block';
+    document.getElementById('view-pending').style.display = 'block';
 }
 
 function copyPix() {
-    const input = document.getElementById('pix-code');
-    input.select();
-    document.execCommand('copy');
-    const msg = document.getElementById('copied-msg');
-    msg.style.display = 'block';
-    setTimeout(() => msg.style.display = 'none', 3000);
+    const code = pixCode.textContent;
+    navigator.clipboard?.writeText(code).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = code; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    });
+    const toast = document.getElementById('copied-toast');
+    toast.style.display = 'block';
+    setTimeout(() => toast.style.display = 'none', 3000);
 }
 </script>
 </body>
