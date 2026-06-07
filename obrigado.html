@@ -3,343 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguardando Pagamento — Julia & Julie</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Pedido Confirmado — Julia & Julie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f7; display: flex; align-items: flex-start; justify-content: center; min-height: 100vh; padding: 12px; color: #1a1a1a; }
+        .card { background: white; border-radius: 16px; padding: 18px 20px; max-width: 460px; width: 100%; text-align: center; box-shadow: 0 4px 30px rgba(0,0,0,0.05); }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #ffffff;
-            color: #111;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 36px 20px 56px;
+        .store-logo { height: 40px; margin: 0 auto 12px; display: block; }
+
+        .icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 22px; }
+        .icon.success { background: #f9e8f0; color: #7a3050; }
+        .icon.pending { background: #f9e8f0; color: #7a3050; }
+        .icon.failure { background: #ffebee; color: #c62828; }
+
+        h1 { font-size: 18px; margin-bottom: 4px; }
+        p { color: #666; margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
+
+        .pix-container { background: #f9fafb; border: 1px dashed #ddd; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+        .qr-code { width: 170px; height: 170px; margin: 0 auto 10px; }
+        .qr-code img { width: 100%; }
+        .copy-box { background: white; border: 1px solid #eee; padding: 8px; border-radius: 8px; font-size: 11px; word-break: break-all; margin-bottom: 8px; color: #333; }
+        .btn-copy { background: #1a1a1a; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; font-family: 'Inter', sans-serif; font-size: 14px; }
+        .btn-copy:active { opacity: 0.85; }
+
+        .urgency-banner {
+            background: transparent; border: none; padding: 6px 0;
+            margin-bottom: 8px; display: flex; flex-direction: column;
+            align-items: center; gap: 2px;
         }
-
-        /* ── Logo ── */
-        .logo {
-            height: 52px;
-            object-fit: contain;
-            margin-bottom: 32px;
+        .urgency-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #1a1a1a; }
+        .urgency-banner.critical .urgency-label { color: #dc2626; }
+        .countdown-display {
+            font-size: 26px; font-weight: 800; color: #1a1a1a;
+            letter-spacing: 2px; line-height: 1; font-variant-numeric: tabular-nums;
         }
+        .urgency-banner.critical .countdown-display { color: #dc2626; }
+        .urgency-msg { font-size: 11px; color: #1a1a1a; font-weight: 500; line-height: 1.3; }
+        .urgency-banner.critical .urgency-msg { color: #991b1b; font-weight: 600; }
 
-        /* ── Wrapper centralizado ── */
-        .wrap {
-            width: 100%;
-            max-width: 420px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* ── Ícone relógio ── */
-        .clock-wrap {
-            width: 76px; height: 76px;
-            border-radius: 50%;
-            background: #f5e8ef;
+        .mp-seal {
             display: flex; align-items: center; justify-content: center;
-            margin-bottom: 22px;
+            gap: 6px; margin-bottom: 8px; font-size: 11px; color: #6b7280;
         }
+        .mp-seal img { height: 44px; vertical-align: middle; }
 
-        /* ── Títulos ── */
-        .title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #111;
-            text-align: center;
-            margin-bottom: 8px;
+        .pix-expired-msg {
+            display: none; background: #fff1f1; border: 1.5px solid #ef4444;
+            border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: center;
         }
-        .subtitle {
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-            margin-bottom: 28px;
-            line-height: 1.5;
-        }
+        .pix-expired-msg p { color: #dc2626; font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+        .pix-expired-msg span { font-size: 11px; color: #7f1d1d; }
 
-        /* ── Timer ── */
-        .timer-section {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .timer-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            border-radius: 8px;
-            padding: 7px 16px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #92400e;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
-        .countdown {
-            font-size: 58px;
-            font-weight: 800;
-            color: #111;
-            letter-spacing: -2px;
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-        .timer-hint {
-            font-size: 13px;
-            color: #666;
-        }
-
-        /* ── Mercado Pago ── */
-        .mp-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 28px;
-            width: 100%;
-        }
-        .mp-row span {
-            font-size: 13px;
-            color: #888;
-            font-weight: 400;
-        }
-        /* SVG inline do logo MP */
-        .mp-logo-wrap {
-            display: flex;
-            align-items: center;
-        }
-
-        /* ── QR Card ── */
-        .qr-card {
-            width: 100%;
-            border: 2px dashed #d4d4d4;
-            border-radius: 18px;
-            padding: 32px 24px 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 18px;
-            background: #fff;
-        }
-        .qr-card img.qr-img {
-            width: 220px;
-            height: 220px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            display: block;
-            border: 1px solid #f0f0f0;
-        }
-        .pix-code-box {
-            width: 100%;
-            background: #f9f9f9;
-            border: 1px solid #eaeaea;
-            border-radius: 10px;
-            padding: 14px 16px;
-            font-size: 11px;
-            font-family: 'Courier New', monospace;
-            color: #444;
-            word-break: break-all;
-            line-height: 1.7;
-            text-align: center;
-            margin-bottom: 16px;
-            user-select: all;
-            cursor: text;
-        }
-        .btn-copy {
-            width: 100%;
-            padding: 17px;
-            background: #111;
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: background 0.2s;
-        }
-        .btn-copy:active { background: #333; }
-        .copied-msg {
-            font-size: 13px;
-            color: #16a34a;
-            font-weight: 600;
-            margin-top: 10px;
-            display: none;
-        }
-
-        /* ── Rodapé ── */
-        .status-hint {
-            font-size: 13px;
-            color: #aaa;
-            text-align: center;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        .btn-home {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: transparent;
-            color: #7a3050;
-            border: 2px solid #7a3050;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            text-align: center;
-            text-decoration: none;
-            font-family: 'Poppins', sans-serif;
-            transition: background 0.18s, color 0.18s;
-            letter-spacing: 0.2px;
-        }
-        .btn-home:hover { background: #7a3050; color: #fff; }
-
-        /* ── Approved ── */
-        .check-wrap {
-            width: 84px; height: 84px;
-            border-radius: 50%;
-            background: #dcfce7;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 22px;
-            font-size: 38px;
-        }
-        .approved-box {
-            width: 100%;
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 14px;
-            color: #15803d;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 28px;
-        }
+        .btn-home { display: block; text-decoration: none; color: #7a3050; font-weight: 700; border: 1px solid #7a3050; padding: 10px; border-radius: 8px; transition: 0.2s; font-size: 13px; }
+        .btn-home:hover { background: #fdf0f5; }
     </style>
 </head>
 <body>
 
-<img src="logo.png" alt="Julia & Julie" class="logo">
+<div class="card">
+    <img src="logo.png" alt="Julia & Julie" class="store-logo">
+    <div id="status-icon" class="icon success"><i class="fas fa-check-circle"></i></div>
+    <h1 id="status-title">Pagamento Confirmado!</h1>
+    <p id="status-desc">Obrigada pela sua compra. Seu pedido será enviado em breve.</p>
 
-<!-- ══ PIX VIEW ══ -->
-<div class="wrap" id="view-pix" style="display:none;">
+    <div id="pix-area" style="display:none;">
 
-    <div class="clock-wrap">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#7a3050" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-        </svg>
+        <div class="urgency-banner" id="urgency-banner">
+            <span class="urgency-label">⚠️ Pague agora — código expirando</span>
+            <div class="countdown-display" id="countdown-display">10:00</div>
+            <span class="urgency-msg" id="urgency-msg">Finalize seu pagamento antes que o código Pix expire!</span>
+        </div>
+
+        <div class="mp-seal">
+            <span>Pagamento processado por</span>
+            <img src="mp-logo.png" alt="Mercado Pago">
+        </div>
+
+        <div class="pix-expired-msg" id="pix-expired-msg">
+            <p>⛔ Seu código Pix expirou!</p>
+            <span>Volte à loja e gere um novo Pix para concluir sua compra.</span>
+        </div>
+
+        <div class="pix-container">
+            <div class="qr-code">
+                <img id="qr-img" src="" alt="QR Code Pix">
+            </div>
+            <div class="copy-box" id="pix-code">Carregando código...</div>
+            <button class="btn-copy" onclick="copyPix()">COPIAR CÓDIGO PIX</button>
+        </div>
+        <p style="font-size:13px;">O status será atualizado automaticamente após o pagamento.</p>
     </div>
 
-    <h1 class="title">Aguardando Pagamento</h1>
-    <p class="subtitle">Para finalizar, pague o Pix abaixo:</p>
-
-    <div class="timer-section">
-        <div class="timer-badge">⚠️ Pague agora — Código expirando</div>
-        <div class="countdown" id="countdown">10:00</div>
-        <p class="timer-hint">Finalize seu pagamento antes que o código Pix expire!</p>
-    </div>
-
-    <!-- Mercado Pago logo -->
-    <div class="mp-row">
-        <span>Pagamento processado por</span>
-        <!-- Logo Mercado Pago inline SVG fiel ao original -->
-        <svg width="130" height="30" viewBox="0 0 130 30" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mercado Pago">
-            <!-- Ícone: círculo azul com onda branca -->
-            <circle cx="15" cy="15" r="14" fill="#009EE3"/>
-            <!-- Onda / seta estilizada branca -->
-            <path d="M7 19 Q10 11 15 15 Q20 19 23 11" stroke="white" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-            <!-- Texto mercado -->
-            <text x="34" y="13" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#009EE3" letter-spacing="0.1">mercado</text>
-            <!-- Texto pago -->
-            <text x="34" y="25" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="400" fill="#333" letter-spacing="0.1">pago</text>
-        </svg>
-    </div>
-
-    <div class="qr-card">
-        <img id="pix-img" class="qr-img" src="" alt="QR Code PIX" style="display:none;">
-        <div class="pix-code-box" id="pix-code-display"></div>
-        <button class="btn-copy" onclick="copyPix()">Copiar Código PIX</button>
-        <div class="copied-msg" id="copied-msg">✓ Código copiado com sucesso!</div>
-    </div>
-
-    <p class="status-hint">O status será atualizado automaticamente após o pagamento.</p>
-    <a href="/" class="btn-home">Ir para página inicial</a>
-</div>
-
-<!-- ══ APPROVED VIEW ══ -->
-<div class="wrap" id="view-ok" style="display:none; text-align:center;">
-    <div class="check-wrap">✅</div>
-    <h1 class="title" style="margin-bottom:8px;">Pedido confirmado!</h1>
-    <p class="subtitle">Seu pagamento foi aprovado com sucesso.<br>Em breve você receberá a confirmação por e-mail.</p>
-    <div class="approved-box">🎉 Obrigada pela sua compra, Julia & Julie!</div>
-    <a href="/" class="btn-home">Ir para página inicial</a>
-</div>
-
-<!-- ══ PENDING FALLBACK ══ -->
-<div class="wrap" id="view-pending" style="display:none; text-align:center;">
-    <div class="clock-wrap" style="margin:0 auto 22px;">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#7a3050" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-        </svg>
-    </div>
-    <h1 class="title" style="margin-bottom:8px;">Aguardando confirmação</h1>
-    <p class="subtitle">Seu pedido está sendo processado. Assim que o pagamento for confirmado, você receberá uma confirmação por e-mail.</p>
     <a href="/" class="btn-home">Ir para página inicial</a>
 </div>
 
 <script>
-const p      = new URLSearchParams(window.location.search);
-const type   = p.get('type');
-const status = p.get('status');
-const qr     = p.get('qr_code');
-const qrB64  = p.get('qr_code_base64');
+const params   = new URLSearchParams(window.location.search);
+const status   = params.get('status');
+const type     = params.get('type');
+const pixCode  = params.get('qr_code')         ? decodeURIComponent(params.get('qr_code'))         : '';
+const pixImg   = params.get('qr_code_base64')  ? decodeURIComponent(params.get('qr_code_base64'))  : '';
+const paymentId = params.get('id');
 
-if (type === 'pix' && qr) {
-    document.getElementById('view-pix').style.display = 'flex';
+if (type === 'pix' && status === 'pending') {
+    document.getElementById('status-icon').className = 'icon pending';
+    document.getElementById('status-icon').innerHTML = '<i class="fas fa-clock"></i>';
+    document.getElementById('status-title').innerText = 'Aguardando Pagamento';
+    document.getElementById('status-desc').innerText  = 'Para finalizar, pague o Pix abaixo:';
+    document.getElementById('pix-area').style.display = 'block';
+    document.getElementById('qr-img').src  = pixImg ? 'data:image/png;base64,' + pixImg : '';
+    document.getElementById('pix-code').innerText = pixCode;
 
-    const pixImg = document.getElementById('pix-img');
-    if (qrB64) {
-        pixImg.src = 'data:image/png;base64,' + decodeURIComponent(qrB64);
-        pixImg.style.display = 'block';
-    }
-    document.getElementById('pix-code-display').textContent = decodeURIComponent(qr);
+    if (paymentId) startPixPolling(paymentId);
+    startCountdown();
 
-    // Countdown 10 min
-    let secs = 10 * 60;
-    const el = document.getElementById('countdown');
+} else if (status === 'rejected') {
+    document.getElementById('status-icon').className = 'icon failure';
+    document.getElementById('status-icon').innerHTML = '<i class="fas fa-times-circle"></i>';
+    document.getElementById('status-title').innerText = 'Pagamento Recusado';
+    document.getElementById('status-desc').innerText  = 'Não foi possível processar o pagamento. Tente novamente.';
+}
+
+function startCountdown() {
+    let seconds = 600;
+    const display    = document.getElementById('countdown-display');
+    const banner     = document.getElementById('urgency-banner');
+    const msg        = document.getElementById('urgency-msg');
+    const expiredMsg = document.getElementById('pix-expired-msg');
+
     const tick = setInterval(() => {
-        secs--;
-        if (secs <= 0) { clearInterval(tick); el.textContent = '00:00'; return; }
-        const m = String(Math.floor(secs / 60)).padStart(2, '0');
-        const s = String(secs % 60).padStart(2, '0');
-        el.textContent = m + ':' + s;
-    }, 1000);
+        seconds--;
+        const m = Math.floor(seconds / 60), s = seconds % 60;
+        display.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 
-} else if (type === 'card' || status === 'approved') {
-    document.getElementById('view-ok').style.display = 'flex';
-} else {
-    document.getElementById('view-pending').style.display = 'flex';
+        if (seconds <= 120 && seconds > 0) {
+            banner.classList.add('critical');
+            msg.textContent = 'Atenção! Seu código Pix está prestes a expirar. Pague agora!';
+        }
+        if (seconds <= 0) {
+            clearInterval(tick);
+            banner.style.display = 'none';
+            expiredMsg.style.display = 'block';
+            const container = document.querySelector('.pix-container');
+            if (container) { container.style.opacity = '0.4'; container.style.pointerEvents = 'none'; }
+        }
+    }, 1000);
+}
+
+async function startPixPolling(id) {
+    const interval = setInterval(async () => {
+        try {
+            const res  = await fetch('/api/check-payment-status?payment_id=' + id);
+            const data = await res.json();
+            if (data.status === 'approved') {
+                clearInterval(interval);
+                showSuccess();
+            }
+        } catch (e) {}
+    }, 5000);
+}
+
+function showSuccess() {
+    document.getElementById('urgency-banner').style.display = 'none';
+    document.getElementById('pix-area').style.display       = 'none';
+    document.getElementById('status-icon').className        = 'icon success';
+    document.getElementById('status-icon').innerHTML        = '<i class="fas fa-check-circle"></i>';
+    document.getElementById('status-title').innerText       = 'Pagamento Confirmado!';
+    document.getElementById('status-desc').innerText        = 'Recebemos o seu Pix. Seu sutiã já está sendo preparado!';
 }
 
 function copyPix() {
-    const code = document.getElementById('pix-code-display').textContent;
-    (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject())
+    (navigator.clipboard ? navigator.clipboard.writeText(pixCode) : Promise.reject())
         .catch(() => {
             const t = document.createElement('textarea');
-            t.value = code; document.body.appendChild(t);
-            t.select(); document.execCommand('copy'); document.body.removeChild(t);
-        });
-    const msg = document.getElementById('copied-msg');
-    msg.style.display = 'block';
-    setTimeout(() => msg.style.display = 'none', 3000);
+            t.value = pixCode; document.body.appendChild(t); t.select();
+            document.execCommand('copy'); document.body.removeChild(t);
+        })
+        .then(() => alert('Código Pix copiado!'))
+        .catch(() => alert('Código Pix copiado!'));
 }
 </script>
 </body>
