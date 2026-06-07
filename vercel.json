@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/checkout", "destination": "/checkout.html" },
     { "source": "/success", "destination": "/success.html" },
+    { "source": "/obrigado", "destination": "/obrigado.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" }
   ]
 }

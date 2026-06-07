@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido Confirmado — Julia & Julie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { font-family:'Poppins',sans-serif; background:#fdf7fa; color:#333; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 20px; }
+        .card { background:#fff; border-radius:20px; padding:40px 32px; max-width:500px; width:100%; text-align:center; box-shadow:0 4px 30px rgba(201,123,154,0.12); }
+        .icon { font-size:56px; margin-bottom:16px; }
+        h1 { font-size:22px; font-weight:700; color:#222; margin-bottom:8px; }
+        .sub { font-size:14px; color:#888; line-height:1.6; margin-bottom:24px; }
+
+        /* PIX section */
+        .pix-box { background:#f8f3f6; border-radius:14px; padding:24px 20px; margin-bottom:20px; }
+        .pix-box p { font-size:13px; color:#666; margin-bottom:12px; }
+        .pix-box img { width:180px; height:180px; border-radius:10px; border:2px solid #e8d5e0; margin-bottom:16px; }
+        .pix-copy-row { display:flex; gap:8px; align-items:center; }
+        .pix-copy-row input { flex:1; font-size:11px; padding:9px 12px; border:1.5px solid #e8d5e0; border-radius:8px; font-family:monospace; color:#555; outline:none; }
+        .btn-copy { padding:9px 16px; background:#7a3050; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; font-family:'Poppins',sans-serif; white-space:nowrap; }
+        .copied { color:#1a7a4a; font-size:12px; margin-top:6px; display:none; }
+        .pix-timer { margin-top:14px; background:#fff8f0; border-radius:8px; padding:10px 14px; font-size:13px; color:#e67e00; border:1px solid #ffd580; }
+
+        /* Card approved */
+        .approved-box { background:#f0faf5; border-radius:14px; padding:20px; margin-bottom:20px; font-size:14px; color:#1a7a4a; border:1px solid #c3e6d4; }
+
+        .btn-home { display:inline-block; background:#7a3050; color:#fff; padding:13px 36px; border-radius:50px; font-size:14px; font-weight:600; text-decoration:none; margin-top:8px; font-family:'Poppins',sans-serif; }
+        .btn-home:hover { background:#6a2040; }
+        .order-ref { font-size:12px; color:#bbb; margin-top:16px; }
+    </style>
+</head>
+<body>
+<div class="card" id="card-pix" style="display:none">
+    <div class="icon">🔑</div>
+    <h1>Quase lá! Finalize o PIX</h1>
+    <p class="sub">Escaneie o QR Code ou copie o código abaixo para pagar. Seu pedido será confirmado automaticamente após o pagamento.</p>
+    <div class="pix-box">
+        <img id="pix-img" src="" alt="QR Code PIX" style="display:none">
+        <p>Ou copie o código PIX:</p>
+        <div class="pix-copy-row">
+            <input id="pix-code" type="text" readonly>
+            <button class="btn-copy" onclick="copyPix()">Copiar</button>
+        </div>
+        <div class="copied" id="copied-msg">✓ Copiado!</div>
+        <div class="pix-timer">⏱ O PIX expira em <strong>30 minutos</strong>.</div>
+    </div>
+    <p style="font-size:13px;color:#888;margin-bottom:16px;">Após pagar, clique abaixo para confirmar.</p>
+    <a href="index.html" class="btn-home">✓ Já paguei, voltar à loja</a>
+    <div class="order-ref" id="ref-pix"></div>
+</div>
+
+<div class="card" id="card-ok" style="display:none">
+    <div class="icon">✅</div>
+    <h1>Pedido confirmado!</h1>
+    <p class="sub">Seu pagamento foi aprovado. Você receberá um e-mail de confirmação em breve.</p>
+    <div class="approved-box">🎉 Pagamento aprovado com sucesso!</div>
+    <a href="index.html" class="btn-home">Voltar à loja</a>
+    <div class="order-ref" id="ref-ok"></div>
+</div>
+
+<div class="card" id="card-pending" style="display:none">
+    <div class="icon">⏳</div>
+    <h1>Aguardando pagamento</h1>
+    <p class="sub">Seu pedido está sendo processado. Assim que o pagamento for confirmado, você receberá um e-mail.</p>
+    <a href="index.html" class="btn-home">Voltar à loja</a>
+</div>
+
+<script>
+const p = new URLSearchParams(window.location.search);
+const type   = p.get('type');
+const status = p.get('status');
+const id     = p.get('id');
+const qr     = p.get('qr_code');
+const qrB64  = p.get('qr_code_base64');
+const total  = p.get('total');
+
+if (type === 'pix' && qr) {
+    document.getElementById('card-pix').style.display = 'block';
+    document.getElementById('pix-code').value = qr;
+    if (qrB64) {
+        const img = document.getElementById('pix-img');
+        img.src = 'data:image/png;base64,' + qrB64;
+        img.style.display = 'block';
+    }
+    if (id) document.getElementById('ref-pix').textContent = 'Referência: JJ-' + id;
+} else if (type === 'card' || status === 'approved') {
+    document.getElementById('card-ok').style.display = 'block';
+    if (id) document.getElementById('ref-ok').textContent = 'Referência: JJ-' + id;
+} else {
+    document.getElementById('card-pending').style.display = 'block';
+}
+
+function copyPix() {
+    const input = document.getElementById('pix-code');
+    input.select();
+    document.execCommand('copy');
+    const msg = document.getElementById('copied-msg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 3000);
+}
+</script>
+</body>
+</html>
