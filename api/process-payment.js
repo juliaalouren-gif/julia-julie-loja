@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
             customerName, customerEmail, customerCpf, customerPhone,
             customerAddress, quantity, promo, totalPrice,
             paymentMethodId, cardToken, cardPaymentMethodId, installments,
-            shippingMethod, shippingPrice
+            shippingMethod, shippingPrice, tamanho, cor
         } = req.body;
 
         const cpfClean = (customerCpf || '').replace(/\D/g, '');
@@ -90,6 +90,8 @@ module.exports = async (req, res) => {
             kit: promo,
             nome_kit: `Kit ${promo}`,
             quantidade: parseInt(quantity) || 1,
+            tamanho: tamanho || '',
+            cor: cor || '',
             forma_pagamento: isPix ? 'PIX' : 'Cartão de Crédito',
             status_pagamento: mpData.status,
             subtotal: parseFloat(totalPrice),

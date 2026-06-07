@@ -1098,6 +1098,8 @@
                         state: document.getElementById('addr-state').value,
                     },
                     quantity: UNITS[promoType] * qty, promo: promoType,
+                    tamanho: urlParams.get('tamanho') || '',
+                    cor: urlParams.get('cor') || '',
                     totalPrice, paymentMethodId: 'credit_card',
                     cardToken: tokenResult.id, cardPaymentMethodId, installments,
                     shippingMethod: selectedShippingName, shippingPrice: selectedShippingPrice,
@@ -1141,6 +1143,8 @@
                         state: document.getElementById('addr-state').value,
                     },
                     quantity: UNITS[promoType] * qty, promo: promoType,
+                    tamanho: urlParams.get('tamanho') || '',
+                    cor: urlParams.get('cor') || '',
                     totalPrice, paymentMethodId: 'pix',
                     shippingMethod: selectedShippingName, shippingPrice: selectedShippingPrice,
                 })
