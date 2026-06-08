@@ -752,14 +752,14 @@
         if (!container) return;
         if (hasFreeShip) {
             container.innerHTML =
-                shippingOption('padrao',   0,     'Grátis',     'Envio Padrão',   'Entrega em 7 a 18 dias úteis', true,  true)  +
-                shippingOption('sedex',    0,     'Grátis',     'Retirar no Galpão', 'Retirada gratuita no galpão', false, true) +
-                shippingOption('expresso', 59.90, 'R$ 59,90',   'Envio Expresso', 'Entrega em até 4 dias úteis',  false, false);
+                shippingOption('padrao',   0,     'Grátis',   'Envio Padrão - Prazo de 6 a 14 dias',  'Entrega em 6 a 14 dias úteis',          true,  true)  +
+                shippingOption('sedex',    0,     'Grátis',   'Retirar no Galpão - Paracambi',         'Disponível em até 2 dias úteis',         false, true)  +
+                shippingOption('expresso', 59.90, 'R$ 59,90', 'Envio Expresso - Prazo de 4 dias',      'Entrega em até 4 dias úteis',            false, false);
         } else {
             container.innerHTML =
-                shippingOption('padrao',   19.90, 'R$ 19,90',   'Envio Padrão',   'Entrega em 7 a 18 dias úteis', true,  false) +
-                shippingOption('sedex',    0,     'Grátis',     'Retirar no Galpão', 'Retirada gratuita no galpão', false, true) +
-                shippingOption('expresso', 59.90, 'R$ 59,90',   'Envio Expresso', 'Entrega em até 4 dias úteis',  false, false);
+                shippingOption('padrao',   19.90, 'R$ 19,90', 'Envio Padrão - Prazo de 6 a 14 dias',  'Entrega em 6 a 14 dias úteis',          true,  false) +
+                shippingOption('sedex',    0,     'Grátis',   'Retirar no Galpão - Paracambi',         'Disponível em até 2 dias úteis',         false, true)  +
+                shippingOption('expresso', 59.90, 'R$ 59,90', 'Envio Expresso - Prazo de 4 dias',      'Entrega em até 4 dias úteis',            false, false);
         }
     }
     buildShippingOptions();
@@ -949,7 +949,7 @@
             document.getElementById('txt-sum-cep-2').textContent  = `CEP: ${cep}`;
         } else if (n === 3) {
             document.getElementById('txt-sum-ship-3').textContent = selectedShippingName;
-            const etaMap = { 'Envio Padrão (Grátis)': '7 a 18 dias úteis', 'Envio Padrão': '7 a 18 dias úteis', 'Retirar no Galpão': 'Retirada gratuita no galpão', 'Envio Expresso': 'até 4 dias úteis' };
+            const etaMap = { 'Envio Padrão - Prazo de 6 a 14 dias': '6 a 14 dias úteis', 'Retirar no Galpão - Paracambi': 'até 2 dias úteis', 'Envio Expresso - Prazo de 4 dias': 'até 4 dias úteis' };
             document.getElementById('txt-sum-eta-3').textContent = etaMap[selectedShippingName] || '7 a 15 dias úteis';
         }
 
