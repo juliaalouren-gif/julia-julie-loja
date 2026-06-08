@@ -121,11 +121,11 @@ if (type === 'pix' && status === 'pending') {
     document.getElementById('qr-img').src  = pixImg ? 'data:image/png;base64,' + pixImg : '';
     document.getElementById('pix-code').innerText = pixCode;
 
-    // Dispara Purchase do PIX apenas uma vez por payment_id
+    // Dispara Purchase do PIX apenas uma vez por payment_id (localStorage persiste entre abas/reloads)
     if (paymentId) {
-        const pixKey = 'px_fired_' + paymentId;
-        if (!sessionStorage.getItem(pixKey)) {
-            sessionStorage.setItem(pixKey, '1');
+        const pixKey = 'jj_px_' + paymentId;
+        if (!localStorage.getItem(pixKey)) {
+            localStorage.setItem(pixKey, '1');
             const orderTotal = parseFloat(params.get('total') || '0');
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'Purchase', { value: orderTotal, currency: 'BRL', num_items: 1, content_ids: ['sutia-hanna-30'], content_type: 'product' });

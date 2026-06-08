@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Finalizar Compra — Julia &amp; Julie Lingerie</title>
     <!-- Meta Pixel Code -->
-    <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','3832792887031077');fbq('track','PageView');(function(){const p=new URLSearchParams(window.location.search);const prices={A:98.90,B:147.90,C:197.90};const promo=p.get('promo')||'B';const qty=parseInt(p.get('qty')||'1');const val=Math.round((prices[promo]||147.90)*qty*100)/100;fbq('track','InitiateCheckout',{content_name:'Sutiã Hanna 3.0',content_ids:['sutia-hanna-30'],content_type:'product',value:val,currency:'BRL',num_items:qty});})();</script>
+    <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','3832792887031077');fbq('track','PageView');(function(){if(sessionStorage.getItem('jj_ic_fired'))return;sessionStorage.setItem('jj_ic_fired','1');const p=new URLSearchParams(window.location.search);const prices={A:98.90,B:147.90,C:197.90};const promo=p.get('promo')||'B';const qty=parseInt(p.get('qty')||'1');const val=Math.round((prices[promo]||147.90)*qty*100)/100;fbq('track','InitiateCheckout',{content_name:'Sutiã Hanna 3.0',content_ids:['sutia-hanna-30'],content_type:'product',value:val,currency:'BRL',num_items:qty});})();</script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=3832792887031077&ev=PageView&noscript=1"/></noscript>
     <!-- End Meta Pixel Code -->
     <script src="https://sdk.mercadopago.com/js/v2"></script>
@@ -968,7 +968,8 @@
             setTimeout(() => {
                 document.getElementById(`step-${next}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 60);
-            if (next === 4 && typeof fbq !== 'undefined') {
+            if (next === 4 && typeof fbq !== 'undefined' && !sessionStorage.getItem('jj_api_fired')) {
+                sessionStorage.setItem('jj_api_fired', '1');
                 fbq('track', 'AddPaymentInfo', {
                     content_ids: ['sutia-hanna-30'],
                     content_type: 'product',
@@ -1122,7 +1123,8 @@
             if (!res.ok) {
                 alert(`Pagamento recusado.\nMotivo: ${result.error || 'Erro desconhecido'}\n\nVerifique os dados ou tente com outro cartão.`);
             } else if (result.status === 'approved') {
-                if (typeof fbq !== 'undefined') {
+                if (typeof fbq !== 'undefined' && !sessionStorage.getItem('jj_pur_fired')) {
+                    sessionStorage.setItem('jj_pur_fired', '1');
                     fbq('track', 'Purchase', { value: totalPrice, currency: 'BRL', num_items: UNITS[promoType] * qty, content_ids: ['sutia-hanna-30'], content_type: 'product' });
                     fbq('trackCustom', 'PurchaseNewClient', { value: totalPrice, currency: 'BRL' });
                     fbq('trackCustom', 'PurchaseCard', { value: totalPrice, currency: 'BRL' });
