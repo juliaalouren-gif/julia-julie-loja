@@ -7,6 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Meta Pixel Code -->
+    <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','3832792887031077');fbq('track','PageView');</script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=3832792887031077&ev=PageView&noscript=1"/></noscript>
+    <!-- End Meta Pixel Code -->
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: #f5f5f7; display: flex; align-items: flex-start; justify-content: center; min-height: 100vh; padding: 12px; color: #1a1a1a; }
@@ -117,7 +121,20 @@ if (type === 'pix' && status === 'pending') {
     document.getElementById('qr-img').src  = pixImg ? 'data:image/png;base64,' + pixImg : '';
     document.getElementById('pix-code').innerText = pixCode;
 
-    if (paymentId) startPixPolling(paymentId);
+    // Dispara Purchase do PIX apenas uma vez por payment_id
+    if (paymentId) {
+        const pixKey = 'px_fired_' + paymentId;
+        if (!sessionStorage.getItem(pixKey)) {
+            sessionStorage.setItem(pixKey, '1');
+            const orderTotal = parseFloat(params.get('total') || '0');
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Purchase', { value: orderTotal, currency: 'BRL', num_items: 1, content_ids: ['sutia-hanna-30'], content_type: 'product' });
+                fbq('trackCustom', 'PurchaseNewClient', { value: orderTotal, currency: 'BRL' });
+                fbq('trackCustom', 'PurchasePix', { value: orderTotal, currency: 'BRL' });
+            }
+        }
+        startPixPolling(paymentId);
+    }
     startCountdown();
 
 } else if (status === 'rejected') {
