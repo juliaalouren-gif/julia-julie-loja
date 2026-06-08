@@ -747,12 +747,12 @@
         if (hasFreeShip) {
             container.innerHTML =
                 shippingOption('padrao',   0,     'Grátis',     'Envio Padrão',   'Entrega em 7 a 18 dias úteis', true,  true)  +
-                shippingOption('sedex',    29.90, 'R$ 29,90',   'Envio Sedex',    'Entrega em 6 a 10 dias úteis', false, false) +
+                shippingOption('sedex',    0,     'Grátis',     'Retirar no Galpão', 'Retirada gratuita no galpão', false, true) +
                 shippingOption('expresso', 59.90, 'R$ 59,90',   'Envio Expresso', 'Entrega em até 4 dias úteis',  false, false);
         } else {
             container.innerHTML =
                 shippingOption('padrao',   19.90, 'R$ 19,90',   'Envio Padrão',   'Entrega em 7 a 18 dias úteis', true,  false) +
-                shippingOption('sedex',    39.90, 'R$ 39,90',   'Envio Sedex',    'Entrega em 6 a 10 dias úteis', false, false) +
+                shippingOption('sedex',    0,     'Grátis',     'Retirar no Galpão', 'Retirada gratuita no galpão', false, true) +
                 shippingOption('expresso', 59.90, 'R$ 59,90',   'Envio Expresso', 'Entrega em até 4 dias úteis',  false, false);
         }
     }
@@ -943,7 +943,7 @@
             document.getElementById('txt-sum-cep-2').textContent  = `CEP: ${cep}`;
         } else if (n === 3) {
             document.getElementById('txt-sum-ship-3').textContent = selectedShippingName;
-            const etaMap = { 'Envio Padrão (Grátis)': '7 a 18 dias úteis', 'Envio Padrão': '7 a 18 dias úteis', 'Envio Sedex': '6 a 10 dias úteis', 'Envio Expresso': 'até 4 dias úteis' };
+            const etaMap = { 'Envio Padrão (Grátis)': '7 a 18 dias úteis', 'Envio Padrão': '7 a 18 dias úteis', 'Retirar no Galpão': 'Retirada gratuita no galpão', 'Envio Expresso': 'até 4 dias úteis' };
             document.getElementById('txt-sum-eta-3').textContent = etaMap[selectedShippingName] || '7 a 15 dias úteis';
         }
 
