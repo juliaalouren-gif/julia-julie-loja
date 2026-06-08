@@ -189,27 +189,29 @@
         .field-error.show { display: block; }
 
         /* ── SHIPPING ── */
-        .shipping-options { border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin: 14px 0 18px; }
+        .shipping-options { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin: 14px 0 18px; }
         .shipping-option {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 13px 16px; background: white; cursor: pointer;
+            padding: 16px 18px; background: white; cursor: pointer;
             transition: background 0.15s; border-bottom: 1px solid var(--border);
         }
         .shipping-option:last-child { border-bottom: none; }
         .shipping-option:hover { background: #fdf7fa; }
-        .shipping-option.selected { background: #fdf0f6; border-left: 3px solid var(--accent); }
-        .shipping-info { display: flex; align-items: center; gap: 11px; }
+        .shipping-option.selected { background: #fdf4f8; border-left: 4px solid var(--accent); }
+        .shipping-option:not(.selected) { padding-left: 19px; }
+        .shipping-info { display: flex; align-items: center; gap: 14px; }
         .radio-circle {
-            width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 50%;
+            width: 22px; height: 22px; border: 2px solid #d0d0d0; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             transition: border-color 0.2s; flex-shrink: 0;
         }
-        .shipping-option.selected .radio-circle { border-color: var(--accent); }
-        .radio-inner { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; transform: scale(0); transition: transform 0.2s; }
+        .shipping-option.selected .radio-circle { border-color: var(--accent); border-width: 2px; background: white; }
+        .radio-inner { width: 12px; height: 12px; background: var(--accent); border-radius: 50%; transform: scale(0); transition: transform 0.2s; }
         .shipping-option.selected .radio-inner { transform: scale(1); }
-        .shipping-text { font-size: 12px; font-weight: 600; color: #1a1a1a; display: block; }
-        .shipping-eta { font-size: 11px; color: var(--muted); display: block; margin-top: 1px; }
-        .shipping-price { font-size: 12px; font-weight: 700; white-space: nowrap; }
+        .shipping-text { font-size: 14px; font-weight: 700; color: #1a1a1a; display: block; }
+        .shipping-eta { font-size: 12px; color: var(--muted); display: block; margin-top: 2px; }
+        .shipping-price { font-size: 14px; font-weight: 700; white-space: nowrap; color: #1a1a1a; }
+        .shipping-price.free { color: #22c55e; }
 
         /* ── PAYMENT TABS ── */
         .payment-tabs { display: flex; gap: 10px; margin-bottom: 18px; }
@@ -741,7 +743,7 @@
                         <span class="shipping-eta">${eta}</span>
                     </div>
                 </div>
-                <span class="shipping-price"${isFree ? ' style="color:var(--accent)"' : ''}>${costLabel}</span>
+                <span class="shipping-price${isFree ? ' free' : ''}">${costLabel}</span>
             </div>`;
     }
 
