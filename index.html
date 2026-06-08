@@ -839,9 +839,11 @@
         }
 
         function goToCheckout() {
-            const promo = document.querySelector('input[name="bundle"]:checked')?.value || 'B';
-            const qty   = qtyState[promo] || 1;
-            window.location.href = `checkout.html?promo=${promo}&qty=${qty}`;
+            const promo   = document.querySelector('input[name="bundle"]:checked')?.value || 'B';
+            const qty     = qtyState[promo] || 1;
+            const tamanho = typeof selectedSize  !== 'undefined' ? selectedSize  : '';
+            const cor     = typeof selectedColor !== 'undefined' ? selectedColor : '';
+            window.location.href = `checkout.html?promo=${promo}&qty=${qty}&tamanho=${encodeURIComponent(tamanho)}&cor=${encodeURIComponent(cor)}`;
         }
 
         selectPromo('B');

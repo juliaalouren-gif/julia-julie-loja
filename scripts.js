@@ -7,7 +7,7 @@
 
         // Selection logic
         let selectedColor = 'Preto';
-        let selectedSize = 'M';
+        let selectedSize = 'P (40)';
         let selectedBundle = '2';
 
         function selectColor(element, color) {
