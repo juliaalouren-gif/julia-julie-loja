@@ -81,6 +81,7 @@ module.exports = async (req, res) => {
             cep: customerAddress?.cep || '',
             rua: customerAddress?.street || '',
             numero: customerAddress?.number || '',
+            complemento: customerAddress?.complement || '',
             bairro: customerAddress?.neighborhood || '',
             cidade: customerAddress?.city || '',
             estado: customerAddress?.state || '',
