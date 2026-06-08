@@ -972,10 +972,12 @@
             }, 60);
             if (next === 4 && typeof fbq !== 'undefined' && !sessionStorage.getItem('jj_api_fired')) {
                 sessionStorage.setItem('jj_api_fired', '1');
+                const _val = Math.round((basePrice + selectedShippingPrice) * 100) / 100;
                 fbq('track', 'AddPaymentInfo', {
+                    content_name: 'Sutiã Hanna 3.0',
                     content_ids: ['sutia-hanna-30'],
                     content_type: 'product',
-                    value: orderTotal || basePrice,
+                    value: _val,
                     currency: 'BRL'
                 });
             }

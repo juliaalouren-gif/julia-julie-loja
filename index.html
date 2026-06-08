@@ -847,6 +847,17 @@
             const qty     = qtyState[promo] || 1;
             const tamanho = typeof selectedSize  !== 'undefined' ? selectedSize  : '';
             const cor     = typeof selectedColor !== 'undefined' ? selectedColor : '';
+            const val     = Math.round(PROMO_PRICES[promo] * qty * 100) / 100;
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'AddToCart', {
+                    content_name: 'Sutiã Hanna 3.0',
+                    content_ids: ['sutia-hanna-30'],
+                    content_type: 'product',
+                    value: val,
+                    currency: 'BRL',
+                    num_items: qty
+                });
+            }
             window.location.href = `checkout.html?promo=${promo}&qty=${qty}&tamanho=${encodeURIComponent(tamanho)}&cor=${encodeURIComponent(cor)}`;
         }
 
