@@ -20,7 +20,10 @@ module.exports = async (req, res) => {
         const payment = await mpRes.json();
 
         // Update Supabase order status
+        const detail = payment.status_detail || '';
+        const isExpired = detail.includes('expir') || detail === 'pix_expiration_date_expired';
         const newStatus = payment.status === 'approved' ? 'aprovado'
+            : payment.status === 'rejected' && isExpired ? 'expirado'
             : payment.status === 'rejected' ? 'recusado'
             : payment.status === 'pending' ? 'pendente' : payment.status;
 
