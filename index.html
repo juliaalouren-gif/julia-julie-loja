@@ -147,7 +147,7 @@
 
                     <div class="bundle-options">
 
-                        <!-- PROMO A: 1 Sutiã -->
+                        <!-- PROMO A: Pague 1, Leve 2 -->
                         <div class="bundle-card" id="promoA" onclick="selectPromo('A')">
                             <div class="bundle-radio">
                                 <input type="radio" name="bundle" id="bundleA" value="A">
@@ -155,17 +155,17 @@
                             </div>
                             <div class="bundle-info">
                                 <div class="bundle-header">
-                                    <span class="bundle-name">1 Sutiã</span>
+                                    <span class="bundle-name">Pague 1, Leve 2</span>
                                     <span class="save-badge">50% OFF</span>
                                 </div>
-                                <span class="bundle-desc">1 sutiã Hanna 3.0</span>
+                                <span class="bundle-desc">2 sutiãs Hanna 3.0 + <strong>Frete Grátis</strong></span>
                                 <div class="bundle-selections promo-selections" id="selectionsA" style="display:none;">
                                     <p class="selection-label">Quantos Kits?</p>
                                     <div class="kit-qty-row">
                                         <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('A',-1)">−</button>
                                         <span class="kit-qty-val" id="qtyA">1</span>
                                         <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('A',1)">+</button>
-                                        <span class="kit-qty-label" id="qtyLabelA">unidade</span>
+                                        <span class="kit-qty-label" id="qtyLabelA">kit (2 sutiãs)</span>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                             </div>
                         </div>
 
-                        <!-- PROMO B: Kit com 2 Sutiãs + Frete Grátis (Mais Popular) -->
+                        <!-- PROMO B: Pague 2, Leve 3 (Mais Popular) -->
                         <div class="bundle-card active most-popular" id="promoB" onclick="selectPromo('B')">
                             <div class="popular-badge">Mais Popular</div>
                             <div class="bundle-radio">
@@ -184,51 +184,23 @@
                             </div>
                             <div class="bundle-info">
                                 <div class="bundle-header">
-                                    <span class="bundle-name">Kit com 2 Sutiãs</span>
-                                    <span class="save-badge">25% OFF</span>
+                                    <span class="bundle-name">Pague 2, Leve 3</span>
+                                    <span class="save-badge">33% OFF</span>
                                 </div>
-                                <span class="bundle-desc">2 sutiãs + <strong>Frete Grátis</strong></span>
+                                <span class="bundle-desc">3 sutiãs Hanna 3.0 + <strong>Frete Grátis</strong></span>
                                 <div class="bundle-selections promo-selections" id="selectionsB" style="display:block;">
                                     <p class="selection-label">Quantos Kits?</p>
                                     <div class="kit-qty-row">
                                         <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('B',-1)">−</button>
                                         <span class="kit-qty-val" id="qtyB">1</span>
                                         <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('B',1)">+</button>
-                                        <span class="kit-qty-label" id="qtyLabelB">kit (2 sutiãs)</span>
+                                        <span class="kit-qty-label" id="qtyLabelB">kit (3 sutiãs)</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="bundle-price">
-                                <span class="current-price" id="priceB">R$147,90</span>
-                                <span class="old-price" id="oldB">R$197,80</span>
-                            </div>
-                        </div>
-
-                        <!-- PROMO C: Kit com 3 Sutiãs + Frete Grátis -->
-                        <div class="bundle-card" id="promoC" onclick="selectPromo('C')">
-                            <div class="bundle-radio">
-                                <input type="radio" name="bundle" id="bundleC" value="C">
-                                <label for="bundleC"></label>
-                            </div>
-                            <div class="bundle-info">
-                                <div class="bundle-header">
-                                    <span class="bundle-name">Kit com 3 Sutiãs</span>
-                                    <span class="save-badge">33% OFF</span>
-                                </div>
-                                <span class="bundle-desc">3 sutiãs + <strong>Frete Grátis</strong></span>
-                                <div class="bundle-selections promo-selections" id="selectionsC" style="display:none;">
-                                    <p class="selection-label">Quantos Kits?</p>
-                                    <div class="kit-qty-row">
-                                        <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('C',-1)">−</button>
-                                        <span class="kit-qty-val" id="qtyC">1</span>
-                                        <button class="kit-qty-btn" onclick="event.stopPropagation(); changeQty('C',1)">+</button>
-                                        <span class="kit-qty-label" id="qtyLabelC">kit (3 sutiãs)</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bundle-price">
-                                <span class="current-price" id="priceC">R$197,90</span>
-                                <span class="old-price" id="oldC">R$296,70</span>
+                                <span class="current-price" id="priceB">R$127,90</span>
+                                <span class="old-price" id="oldB">R$296,70</span>
                             </div>
                         </div>
 
@@ -807,10 +779,10 @@
     <!-- INTERACTIVITY & ANIMATIONS -->
     <script src="scripts.js"></script>
     <script>
-        const PROMO_PRICES   = { A: 98.90,  B: 147.90, C: 197.90 };
-        const PROMO_OLD      = { A: 197.80, B: 197.80, C: 296.70 };
-        const PROMO_UNITS    = { A: 1,      B: 2,      C: 3 };
-        const qtyState       = { A: 1, B: 1, C: 1 };
+        const PROMO_PRICES   = { A: 98.90,  B: 127.90 };
+        const PROMO_OLD      = { A: 197.80, B: 296.70 };
+        const PROMO_UNITS    = { A: 2,      B: 3 };
+        const qtyState       = { A: 1, B: 1 };
 
         function fmtBRL(v) { return 'R$' + v.toFixed(2).replace('.', ','); }
 
@@ -832,7 +804,7 @@
         }
 
         function selectPromo(promo) {
-            ['A','B','C'].forEach(p => {
+            ['A','B'].forEach(p => {
                 document.getElementById('promo' + p).classList.remove('active');
                 document.getElementById('bundle' + p).checked = false;
                 document.getElementById('selections' + p).style.display = 'none';
