@@ -32,6 +32,7 @@ module.exports = async (req, res) => {
         const mpBody = {
             transaction_amount: amount,
             description: `Julia & Julie - Kit ${promo} (${quantity} un)`,
+            statement_descriptor: 'JULIAEJULIE',
             payment_method_id: isPix ? 'pix' : cardPaymentMethodId || 'visa',
             payer: {
                 email: customerEmail,
