@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
             customerName, customerEmail, customerCpf, customerPhone,
             customerAddress, quantity, promo, totalPrice,
             paymentMethodId, cardToken, cardPaymentMethodId, installments,
-            shippingMethod, shippingPrice, tamanho, cor
+            shippingMethod, shippingPrice, tamanho, cor, deviceId
         } = req.body;
 
         const cpfClean = (customerCpf || '').replace(/\D/g, '');
@@ -42,7 +42,29 @@ module.exports = async (req, res) => {
                 address: {
                     zip_code: (customerAddress?.cep || '').replace(/\D/g, ''),
                     street_name: customerAddress?.street || '',
-                    street_number: customerAddress?.number || 'S/N'
+                    street_number: customerAddress?.number || 'S/N',
+                    city: { name: customerAddress?.city || '' },
+                    federal_unit: { name: customerAddress?.state || '' }
+                }
+            },
+            additional_info: {
+                items: [{
+                    id: String(promo),
+                    title: `Kit ${promo} - Sutiã Hanna 3.0`,
+                    description: `Kit ${promo} (${quantity} un), tamanho ${tamanho || 'não informado'}, cor ${cor || 'não informada'}`,
+                    category_id: 'fashion',
+                    quantity: parseInt(quantity) || 1,
+                    unit_price: Math.round((amount / (parseInt(quantity) || 1)) * 100) / 100
+                }],
+                payer: {
+                    first_name: nameParts[0] || customerName,
+                    last_name: nameParts.slice(1).join(' ') || nameParts[0] || '',
+                    phone: { area_code: telClean.slice(0, 2), number: telClean.slice(2) },
+                    address: {
+                        zip_code: (customerAddress?.cep || '').replace(/\D/g, ''),
+                        street_name: customerAddress?.street || '',
+                        street_number: customerAddress?.number || 'S/N'
+                    }
                 }
             },
             notification_url: `${process.env.SITE_URL}/api/webhook`,
@@ -54,13 +76,16 @@ module.exports = async (req, res) => {
             mpBody.installments = parseInt(installments) || 1;
         }
 
+        const mpHeaders = {
+            'Authorization': `Bearer ${MP_ACCESS_TOKEN}`,
+            'Content-Type': 'application/json',
+            'X-Idempotency-Key': `jj-${Date.now()}-${Math.random()}`
+        };
+        if (deviceId) mpHeaders['X-meli-session-id'] = deviceId;
+
         const mpRes = await fetch('https://api.mercadopago.com/v1/payments', {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${MP_ACCESS_TOKEN}`,
-                'Content-Type': 'application/json',
-                'X-Idempotency-Key': `jj-${Date.now()}-${Math.random()}`
-            },
+            headers: mpHeaders,
             body: JSON.stringify(mpBody)
         });
 

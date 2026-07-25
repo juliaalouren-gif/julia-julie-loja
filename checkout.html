@@ -9,6 +9,7 @@
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=3832792887031077&ev=PageView&noscript=1"/></noscript>
     <!-- End Meta Pixel Code -->
     <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script src="https://www.mercadopago.com/v2/security.js" view="checkout"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1121,6 +1122,7 @@
                     totalPrice, paymentMethodId: 'credit_card',
                     cardToken: tokenResult.id, cardPaymentMethodId, installments,
                     shippingMethod: selectedShippingName, shippingPrice: selectedShippingPrice,
+                    deviceId: window.MP_DEVICE_SESSION_ID || '',
                 })
             });
 
@@ -1172,6 +1174,7 @@
                     cor: urlParams.get('cor') || '',
                     totalPrice, paymentMethodId: 'pix',
                     shippingMethod: selectedShippingName, shippingPrice: selectedShippingPrice,
+                    deviceId: window.MP_DEVICE_SESSION_ID || '',
                 })
             });
             const result = await res.json();
