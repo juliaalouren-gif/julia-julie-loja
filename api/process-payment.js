@@ -43,9 +43,7 @@ module.exports = async (req, res) => {
                 address: {
                     zip_code: (customerAddress?.cep || '').replace(/\D/g, ''),
                     street_name: customerAddress?.street || '',
-                    street_number: customerAddress?.number || 'S/N',
-                    city: { name: customerAddress?.city || '' },
-                    federal_unit: { name: customerAddress?.state || '' }
+                    street_number: customerAddress?.number || 'S/N'
                 }
             },
             additional_info: {
