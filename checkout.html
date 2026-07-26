@@ -724,9 +724,9 @@
     const qty = parseInt(urlParams.get('qty') || '1');
 
     const PRICES    = { A: 98.90, B: 127.90 };
-    const UNITS     = { A: 2, B: 3 };
+    const UNITS     = { A: 3, B: 4 };
     const FREE_SHIP = { A: true, B: true };
-    const LABELS    = { A: 'Pague 1 Leve 2', B: 'Pague 2 Leve 3' };
+    const LABELS    = { A: 'Pague 1 Leve 3', B: 'Pague 2 Receba 4' };
 
     const basePrice = PRICES[promoType] * qty;
     const hasFreeShip = FREE_SHIP[promoType];
