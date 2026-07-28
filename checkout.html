@@ -1056,13 +1056,11 @@
     });
 
     // ── MERCADOPAGO ──────────────────────────────────────
+    const MP_PUBLIC_KEY = 'APP_USR-6c22f4a9-4e65-4763-aea1-d99069d0d86f';
     let _mpInstance = null;
     async function getMpInstance() {
         if (_mpInstance) return _mpInstance;
-        const pkRes = await fetch('/api/mp-public-key');
-        const { public_key } = await pkRes.json();
-        if (!public_key) throw new Error('Chave pública MP indisponível');
-        _mpInstance = new MercadoPago(public_key, { locale: 'pt-BR' });
+        _mpInstance = new MercadoPago(MP_PUBLIC_KEY, { locale: 'pt-BR' });
         return _mpInstance;
     }
 
