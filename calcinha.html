@@ -132,6 +132,18 @@
                         <span class="urgency-text"><span class="urgency-dot"></span><span class="urgency-fire">🔥</span> Esta Promoção termina <strong>HOJE!</strong></span>
                     </div>
 
+                    <!-- Destaque preço por unidade -->
+                    <div style="background:#f5f5f5; border-radius:12px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; margin:10px 0;">
+                        <div>
+                            <div style="font-size:11px; font-weight:800; color:#1a1a1a; letter-spacing:0.5px;">⬤ OFERTA EXCLUSIVA</div>
+                            <div style="font-size:14px; font-weight:700; color:#c9276b;" id="unitPriceLabel">Compre 5 leve 10</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:11px; color:#999;">A unidade sai por:</div>
+                            <div style="font-size:20px; font-weight:800; color:#c9276b;" id="unitPriceValue">R$10,79</div>
+                        </div>
+                    </div>
+
                     <div class="bundle-divider">
                         <span>KITS & PROMOÇÕES</span>
                     </div>
@@ -732,6 +744,18 @@
 
         function fmtBRL(v) { return 'R$' + v.toFixed(2).replace('.', ','); }
 
+        const UNIT_PRICE_LABELS = { CALC5: 'Kit com 5 calcinhas', CALC10: 'Compre 5 leve 10' };
+
+        function updateUnitPriceHighlight(promo) {
+            const n     = qtyState[promo];
+            const total = PROMO_PRICES[promo] * n;
+            const units = PROMO_UNITS[promo] * n;
+            const unitPriceEl = document.getElementById('unitPriceValue');
+            const unitLabelEl = document.getElementById('unitPriceLabel');
+            if (unitPriceEl) unitPriceEl.textContent = fmtBRL(total / units);
+            if (unitLabelEl) unitLabelEl.textContent = UNIT_PRICE_LABELS[promo] || '';
+        }
+
         function updatePrice(promo) {
             const n     = qtyState[promo];
             const total = PROMO_PRICES[promo] * n;
@@ -740,6 +764,7 @@
             document.getElementById('qty'   + promo).textContent = n;
             const lbl = `${n} kit${n > 1 ? 's' : ''} (${units} calcinhas)`;
             document.getElementById('qtyLabel' + promo).textContent = lbl;
+            updateUnitPriceHighlight(promo);
         }
 
         function changeQty(promo, delta) {
@@ -756,6 +781,7 @@
             document.getElementById('promo'      + promo).classList.add('active');
             document.getElementById('bundle'     + promo).checked = true;
             document.getElementById('selections' + promo).style.display = 'block';
+            updateUnitPriceHighlight(promo);
         }
 
         function goToCheckout() {
