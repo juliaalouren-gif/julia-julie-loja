@@ -782,6 +782,11 @@
             document.getElementById('bundle'     + promo).checked = true;
             document.getElementById('selections' + promo).style.display = 'block';
             updateUnitPriceHighlight(promo);
+
+            const promoImages = { CALC5: 'calcinha-kit5.png', CALC10: 'calcinha-kit10.png' };
+            const imgSrc = promoImages[promo];
+            const thumb  = imgSrc && document.querySelector(`.gallery__thumb img[src="${imgSrc}"]`)?.closest('.gallery__thumb');
+            if (thumb) changeImage(thumb, imgSrc);
         }
 
         function goToCheckout() {
