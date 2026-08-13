@@ -57,29 +57,29 @@
         <div class="product-section__inner container">
             <div class="product-gallery">
                 <div class="gallery__main-image" id="mainImage">
-                    <img src="cal1.png" alt="Calcinha Premium Confort" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <img src="cal1.jpg" alt="Calcinha Premium Confort" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                 </div>
                 <div class="gallery__thumbnails">
-                    <div class="gallery__thumb active" onclick="changeImage(this, 'cal1.png')">
-                        <img src="cal1.png" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <div class="gallery__thumb active" onclick="changeImage(this, 'cal1.jpg')">
+                        <img src="cal1.jpg" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
-                    <div class="gallery__thumb" onclick="changeImage(this, 'cal2.png')">
-                        <img src="cal2.png" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <div class="gallery__thumb" onclick="changeImage(this, 'cal2.jpg')">
+                        <img src="cal2.jpg" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
-                    <div class="gallery__thumb" onclick="changeImage(this, 'cal3.png')">
-                        <img src="cal3.png" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <div class="gallery__thumb" onclick="changeImage(this, 'cal3.jpg')">
+                        <img src="cal3.jpg" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
-                    <div class="gallery__thumb" onclick="changeImage(this, 'cal4.png')">
-                        <img src="cal4.png" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <div class="gallery__thumb" onclick="changeImage(this, 'cal4.jpg')">
+                        <img src="cal4.jpg" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
-                    <div class="gallery__thumb" onclick="changeImage(this, 'cal5.png')">
-                        <img src="cal5.png" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <div class="gallery__thumb" onclick="changeImage(this, 'cal5.jpg')">
+                        <img src="cal5.jpg" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
-                    <div class="gallery__thumb" onclick="changeImage(this, 'calcinha-kit10.png')">
-                        <img src="calcinha-kit10.png" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <div class="gallery__thumb" onclick="changeImage(this, 'calcinha-kit10.jpg')">
+                        <img src="calcinha-kit10.jpg" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
-                    <div class="gallery__thumb" onclick="changeImage(this, 'calcinha-kit5.png')">
-                        <img src="calcinha-kit5.png" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <div class="gallery__thumb" onclick="changeImage(this, 'calcinha-kit5.jpg')">
+                        <img src="calcinha-kit5.jpg" alt="Thumb" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
                         <label class="option-label" id="colorLabel">Cor: <strong>Cores Mistas</strong></label>
                         <p style="font-size:11px; color:#999; margin: -4px 0 6px; font-style:italic;">As cores podem variar</p>
                         <div class="color-swatches">
-                            <div class="swatch active" style="background-image:url('misto.png'); background-size:cover; background-position:center; border:1px solid #ddd;" onclick="selectColor(this, 'Cores Mistas')" title="Cores Mistas"></div>
+                            <div class="swatch active" style="background-image:url('misto.jpg'); background-size:cover; background-position:center; border:1px solid #ddd;" onclick="selectColor(this, 'Cores Mistas')" title="Cores Mistas"></div>
                         </div>
                         <p style="font-size:11px; color:#999; margin: 6px 0 0; font-style:italic;">(Mais de uma unidade as cores são variadas)</p>
                     </div>
@@ -796,7 +796,7 @@
             document.getElementById('selections' + promo).style.display = 'block';
             updateUnitPriceHighlight(promo);
 
-            const promoImages = { CALC5: 'calcinha-kit5.png', CALC10: 'calcinha-kit10.png' };
+            const promoImages = { CALC5: 'calcinha-kit5.jpg', CALC10: 'calcinha-kit10.jpg' };
             const imgSrc = promoImages[promo];
             const thumb  = imgSrc && document.querySelector(`.gallery__thumb img[src="${imgSrc}"]`)?.closest('.gallery__thumb');
             if (thumb) changeImage(thumb, imgSrc);
