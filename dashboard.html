@@ -90,6 +90,9 @@
   .badge.aguardando { background:#e3f2fd; color:#1565c0; }
   .no-orders { text-align:center; padding:60px 20px; color:#aaa; font-size:14px; }
   .loading { text-align:center; padding:40px; color:#aaa; }
+  .btn-feito { padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; border:1.5px solid #d4a0a0; background:#fff; color:#b06060; font-family:'Poppins',sans-serif; white-space:nowrap; }
+  .btn-feito:hover { background:#fdf0f5; }
+  .btn-feito.is-done { border-color:#4caf50; background:#e8f5e9; color:#1a7a4a; }
 
   @media(max-width:768px) {
     .stats-grid { grid-template-columns:repeat(2,1fr); }
@@ -133,6 +136,8 @@
       <div class="stat-card blue"><div class="stat-icon">📅</div><div class="stat-label">Faturado Hoje</div><div class="stat-value money" id="s-hoje">—</div><div class="stat-sub" id="s-hoje-sub">0 aprovados</div></div>
       <div class="stat-card purple"><div class="stat-icon">💳</div><div class="stat-label">Cartão Aprovado</div><div class="stat-value" id="s-cartao">—</div><div class="stat-sub">vendas no cartão</div></div>
       <div class="stat-card green"><div class="stat-icon">🟢</div><div class="stat-label">PIX Aprovado</div><div class="stat-value" id="s-pix-ap">—</div><div class="stat-sub">vendas no Pix</div></div>
+      <div class="stat-card green"><div class="stat-icon">✔️</div><div class="stat-label">Pedidos Feitos</div><div class="stat-value" id="s-feitos">—</div><div class="stat-sub">já embalados/enviados</div></div>
+      <div class="stat-card orange"><div class="stat-icon">🕐</div><div class="stat-label">Ainda Faltam</div><div class="stat-value orange" id="s-nao-feitos">—</div><div class="stat-sub">pendentes de fazer</div></div>
     </div>
 
     <!-- FILTERS -->
@@ -189,10 +194,11 @@
               <th>Valor</th>
               <th>Pagamento</th>
               <th>Status</th>
+              <th>Feito</th>
             </tr>
           </thead>
           <tbody id="orders-body">
-            <tr><td colspan="13" class="loading">Carregando...</td></tr>
+            <tr><td colspan="14" class="loading">Carregando...</td></tr>
           </tbody>
         </table>
       </div>
@@ -310,12 +316,34 @@ function renderStats(orders) {
   document.getElementById('s-hoje-sub').textContent = `${hojeAp.length} aprovados`;
   document.getElementById('s-cartao').textContent  = cartaoAp.length;
   document.getElementById('s-pix-ap').textContent  = pixAp.length;
+
+  const feitos = orders.filter(o => o.feito).length;
+  document.getElementById('s-feitos').textContent    = feitos;
+  document.getElementById('s-nao-feitos').textContent = orders.length - feitos;
+}
+
+async function toggleFeito(id, novoValor) {
+  const order = allOrders.find(o => o.id === id);
+  if (order) order.feito = novoValor;
+  renderAll(allOrders);
+  try {
+    const r = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'x-dashboard-password': dashPassword, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'set-feito', id, feito: novoValor })
+    });
+    if (!r.ok) throw new Error('falhou');
+  } catch (e) {
+    if (order) order.feito = !novoValor;
+    renderAll(allOrders);
+    alert('Não consegui salvar. Tente novamente.');
+  }
 }
 
 function renderTable(orders) {
   const tbody = document.getElementById('orders-body');
   if (!orders.length) {
-    tbody.innerHTML = '<tr><td colspan="13" class="no-orders">Nenhum pedido encontrado.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="14" class="no-orders">Nenhum pedido encontrado.</td></tr>';
     return;
   }
   tbody.innerHTML = orders.map(o => {
@@ -336,13 +364,14 @@ function renderTable(orders) {
       <td><strong>R$${parseFloat(o.total||0).toFixed(2).replace('.',',')}</strong></td>
       <td>${esc(o.forma_pagamento)}</td>
       <td>${statusBadge}</td>
+      <td><button class="btn-feito ${o.feito ? 'is-done' : ''}" onclick="toggleFeito('${o.id}', ${!o.feito})">${o.feito ? '✓ Feito' : 'Marcar feito'}</button></td>
     </tr>`;
   }).join('');
 }
 
 function exportCSV() {
   if (!allOrders.length) return alert('Nenhum pedido para exportar.');
-  const cols = ['criado_em','nome','email','telefone','cpf','rua','numero','complemento','bairro','cidade','estado','cep','kit','nome_kit','quantidade','tamanho','cor','tipo_frete','custo_frete','forma_pagamento','status_pagamento','subtotal','desconto','total','status'];
+  const cols = ['criado_em','nome','email','telefone','cpf','rua','numero','complemento','bairro','cidade','estado','cep','kit','nome_kit','quantidade','tamanho','cor','tipo_frete','custo_frete','forma_pagamento','status_pagamento','subtotal','desconto','total','status','feito'];
   const header = cols.join(';');
   const rows   = allOrders.map(o => cols.map(c => `"${(o[c]||'').toString().replace(/"/g,'""')}"`).join(';'));
   const csv    = [header, ...rows].join('\n');

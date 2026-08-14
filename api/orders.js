@@ -13,6 +13,23 @@ module.exports = async (req, res) => {
     const pwd = req.headers['x-dashboard-password'];
     if (pwd !== DASH_PASSWORD) return res.status(401).json({ error: 'Não autorizado' });
 
+    // Mark order as done / not done
+    if (req.method === 'POST' && req.body?.action === 'set-feito') {
+        try {
+            const { id, feito } = req.body;
+            if (!id) return res.status(400).json({ error: 'id é obrigatório' });
+            const r = await fetch(`${SUPABASE_URL}/rest/v1/pedidos?id=eq.${id}`, {
+                method: 'PATCH',
+                headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ feito: !!feito })
+            });
+            if (!r.ok) return res.status(500).json({ error: 'Erro ao atualizar pedido' });
+            return res.status(200).json({ ok: true });
+        } catch (e) {
+            return res.status(500).json({ error: e.message });
+        }
+    }
+
     // Sync pending payments
     if (req.method === 'POST' && req.body?.action === 'sync') {
         try {
