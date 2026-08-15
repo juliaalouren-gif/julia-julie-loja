@@ -235,15 +235,27 @@
     </section>
 
     <!-- 03.1 VÍDEOS FLUTUANTES -->
-    <section class="floating-videos-section">
-        <div class="floating-videos-grid">
-            <div class="floating-video-card float-1">
+    <style>
+        .cc-videos-section { padding: 32px 16px; text-align: center; }
+        .cc-videos-heading { font-family:'Tenor Sans',serif; font-size: 22px; color:#222; max-width: 480px; margin: 0 auto 20px; line-height: 1.35; }
+        .cc-videos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 620px; margin: 0 auto; }
+        .cc-video-card { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.12); aspect-ratio: 3 / 5; background:#eee; }
+        .cc-video-card video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        @media (max-width: 480px) {
+            .cc-videos-heading { font-size: 19px; }
+            .cc-videos-grid { gap: 10px; }
+        }
+    </style>
+    <section class="cc-videos-section">
+        <h2 class="cc-videos-heading">Elas também usam Calcinha Premium Confort e aprovam ❤️</h2>
+        <div class="cc-videos-grid">
+            <div class="cc-video-card">
                 <video src="vidcal.mp4" autoplay muted loop playsinline preload="none"></video>
             </div>
-            <div class="floating-video-card float-2">
+            <div class="cc-video-card">
                 <video src="macanadaaa.mp4" autoplay muted loop playsinline preload="none"></video>
             </div>
-            <div class="floating-video-card float-3">
+            <div class="cc-video-card">
                 <video src="chcalcin.mp4" autoplay muted loop playsinline preload="none"></video>
             </div>
         </div>
