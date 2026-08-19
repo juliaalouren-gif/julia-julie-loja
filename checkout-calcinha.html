@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Finalizar Compra — Julia &amp; Julie Lingerie</title>
     <!-- Meta Pixel Code -->
-    <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','3832792887031077');fbq('track','PageView');(function(){if(sessionStorage.getItem('jj_ic_fired'))return;sessionStorage.setItem('jj_ic_fired','1');const p=new URLSearchParams(window.location.search);const prices={CALC5:79.90,CALC10:107.90};const promo=p.get('promo')||'CALC10';const qty=parseInt(p.get('qty')||'1');const val=Math.round((prices[promo]||107.90)*qty*100)/100;fbq('track','InitiateCheckout',{content_name:'Calcinha Premium Confort',content_ids:['calcinha-premium-confort'],content_type:'product',value:val,currency:'BRL',num_items:qty});})();</script>
+    <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','3832792887031077');fbq('track','PageView');(function(){if(sessionStorage.getItem('jj_ic_fired'))return;sessionStorage.setItem('jj_ic_fired','1');const p=new URLSearchParams(window.location.search);const prices={CALC5:79.90,CALC10:107.90};const promo=p.get('promo')||'CALC10';const qty=parseInt(p.get('qty')||'1');const val=Math.round((prices[promo]||107.90)*qty*100)/100;fbq('track','InitiateCheckout',{content_name:'Calcinha Julie Premium Confort',content_ids:['calcinha-premium-confort'],content_type:'product',value:val,currency:'BRL',num_items:qty});})();</script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=3832792887031077&ev=PageView&noscript=1"/></noscript>
     <!-- End Meta Pixel Code -->
     <script src="https://sdk.mercadopago.com/js/v2"></script>
@@ -608,9 +608,9 @@
                 <i class="fas fa-chevron-down" id="summary-chevron"></i>
             </div>
             <div class="product-line">
-                <img src="cal1.jpg" alt="Calcinha Premium Confort">
+                <img src="cal1.jpg" alt="Calcinha Julie Premium Confort">
                 <div class="product-info">
-                    <h4>Calcinha Premium Confort</h4>
+                    <h4>Calcinha Julie Premium Confort</h4>
                     <p id="sum-variant">1 unid.</p>
                 </div>
             </div>
@@ -773,7 +773,7 @@
         const shipTxt = selectedShippingPrice === 0 ? 'Grátis' : fmt(selectedShippingPrice);
         const units = UNITS[promoType] * qty;
 
-        document.getElementById('sum-variant').textContent = `${units} unid. — Calcinha Premium Confort`;
+        document.getElementById('sum-variant').textContent = `${units} unid. — Calcinha Julie Premium Confort`;
         document.getElementById('sum-subtotal').textContent = fmt(basePrice);
         document.getElementById('sum-shipping').textContent = shipTxt;
         document.getElementById('sum-total').textContent = fmt(total);
@@ -975,7 +975,7 @@
                 sessionStorage.setItem('jj_api_fired', '1');
                 const _val = Math.round((basePrice + selectedShippingPrice) * 100) / 100;
                 fbq('track', 'AddPaymentInfo', {
-                    content_name: 'Calcinha Premium Confort',
+                    content_name: 'Calcinha Julie Premium Confort',
                     content_ids: ['calcinha-premium-confort'],
                     content_type: 'product',
                     value: _val,
