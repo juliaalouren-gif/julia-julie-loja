@@ -85,8 +85,8 @@
                     <div class="gallery__thumb" onclick="changeImage(this, 'cal5.jpg')">
                         <img src="cal5.jpg" alt="Thumb" loading="lazy" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
-                    <div class="gallery__thumb" onclick="changeImage(this, 'embacacalc.jpg')">
-                        <img src="embacacalc.jpg" alt="Thumb" loading="lazy" style="width: 100%; height: auto; display: block; border-radius: inherit;">
+                    <div class="gallery__thumb" onclick="changeImage(this, 'calcinhapaguedez.jpg')">
+                        <img src="calcinhapaguedez.jpg" alt="Thumb" loading="lazy" style="width: 100%; height: auto; display: block; border-radius: inherit;">
                     </div>
                     <div class="gallery__thumb" onclick="changeImage(this, 'calcinha-kit5.jpg')">
                         <img src="calcinha-kit5.jpg" alt="Thumb" loading="lazy" style="width: 100%; height: auto; display: block; border-radius: inherit;">
@@ -838,7 +838,7 @@
             document.getElementById('selections' + promo).style.display = 'block';
             updateUnitPriceHighlight(promo);
 
-            const promoImages = { CALC5: 'calcinha-kit5.jpg', CALC10: 'embacacalc.jpg' };
+            const promoImages = { CALC5: 'calcinha-kit5.jpg', CALC10: 'calcinhapaguedez.jpg' };
             const imgSrc = promoImages[promo];
             const thumb  = imgSrc && document.querySelector(`.gallery__thumb img[src="${imgSrc}"]`)?.closest('.gallery__thumb');
             if (thumb) changeImage(thumb, imgSrc);
