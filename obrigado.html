@@ -141,6 +141,14 @@ if (type === 'pix' && status === 'pending') {
                 fbq('trackCustom', 'PurchaseNewClient', { value: orderTotal, currency: 'BRL' });
                 fbq('trackCustom', 'PurchasePix', { value: orderTotal, currency: 'BRL' });
             }
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-18403187809/MP4WCLal_eYcEOG4qcdE',
+                    'value': orderTotal,
+                    'currency': 'BRL',
+                    'transaction_id': paymentId || ''
+                });
+            }
         }
         startPixPolling(paymentId);
     }

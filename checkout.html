@@ -990,6 +990,13 @@
                     value: _val,
                     currency: 'BRL'
                 });
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-18403187809/rGzpCPyVjOccEOG4qcdE',
+                        'value': _val,
+                        'currency': 'BRL'
+                    });
+                }
             }
         }
     }
@@ -1142,6 +1149,14 @@
                     fbq('track', 'Purchase', { value: totalPrice, currency: 'BRL', num_items: UNITS[promoType] * qty, content_ids: ['sutia-hanna-30'], content_type: 'product' });
                     fbq('trackCustom', 'PurchaseNewClient', { value: totalPrice, currency: 'BRL' });
                     fbq('trackCustom', 'PurchaseCard', { value: totalPrice, currency: 'BRL' });
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'conversion', {
+                            'send_to': 'AW-18403187809/MP4WCLal_eYcEOG4qcdE',
+                            'value': totalPrice,
+                            'currency': 'BRL',
+                            'transaction_id': result.id || ''
+                        });
+                    }
                 }
                 window.location.href = `/obrigado.html?type=card&total=${totalPrice}`;
             } else {
