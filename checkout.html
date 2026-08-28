@@ -290,6 +290,22 @@
         .summary-row.total { font-size: 16px; font-weight: 700; color: var(--text); margin-top: 8px; padding-top: 10px; border-top: 1px dashed var(--border); }
         .pix-discount-pill { display: flex; align-items: center; justify-content: space-between; background: #fff8f0; border: 1px dashed #f97316; border-radius: 8px; padding: 9px 12px; margin-top: 10px; font-size: 12px; color: #c2410c; font-weight: 600; }
 
+        /* ── ORDER BUMPS ── */
+        .order-bumps { margin-bottom: 16px; }
+        .order-bumps-title { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 11.5px; color: var(--text); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 10px; }
+        .bump-card { position: relative; display: flex; align-items: flex-start; gap: 12px; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; cursor: pointer; transition: border-color .15s, background .15s; }
+        .bump-card:hover { border-color: var(--accent); }
+        .bump-card.selected { border-color: var(--accent); background: #fdf4f8; }
+        .bump-checkbox { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+        .bump-card.selected .bump-checkbox { background: var(--accent); border-color: var(--accent); }
+        .bump-checkbox i { font-size: 11px; color: #fff; display: none; }
+        .bump-card.selected .bump-checkbox i { display: block; }
+        .bump-body { flex: 1; min-width: 0; }
+        .bump-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-bottom: 5px; background: var(--accent-light); color: var(--accent-dark); }
+        .bump-title { font-weight: 700; font-size: 13.5px; color: var(--text); }
+        .bump-desc { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+        .bump-price { font-weight: 700; font-size: 14px; color: #1a7a4a; white-space: nowrap; align-self: center; margin-left: 8px; }
+
         /* ── PAYMENT MINI SUMMARY ── */
         .payment-mini-summary { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 18px; }
         .mini-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--muted); margin-bottom: 5px; }
@@ -542,6 +558,28 @@
                     </button>
                 </div>
 
+                <div class="order-bumps">
+                    <div class="order-bumps-title"><i class="fas fa-gift"></i> ADICIONE AO SEU PEDIDO:</div>
+                    <div class="bump-card" id="bump-bras" onclick="toggleOrderBump('bras')">
+                        <div class="bump-checkbox"><i class="fas fa-check"></i></div>
+                        <div class="bump-body">
+                            <span class="bump-badge">MAIS VENDIDO</span>
+                            <div class="bump-title">Leve + 2 Sutiãs Sustentação Leve</div>
+                            <div class="bump-desc">Leve mais 2 unidades com desconto exclusivo</div>
+                        </div>
+                        <div class="bump-price">+ R$ 49,90</div>
+                    </div>
+                    <div class="bump-card" id="bump-priority" onclick="toggleOrderBump('priority')">
+                        <div class="bump-checkbox"><i class="fas fa-check"></i></div>
+                        <div class="bump-body">
+                            <span class="bump-badge">POPULAR</span>
+                            <div class="bump-title">Envio Priorizado</div>
+                            <div class="bump-desc">Ganhe prioridade na separação e no envio — chega mais rápido na sua casa</div>
+                        </div>
+                        <div class="bump-price">+ R$ 8,90</div>
+                    </div>
+                </div>
+
                 <div class="payment-mini-summary">
                     <div class="mini-row"><span>Subtotal</span><span id="pay-sub">R$ 0,00</span></div>
                     <div class="mini-row"><span>Frete</span><span id="pay-ship">Grátis</span></div>
@@ -742,6 +780,31 @@
     let selectedShippingPrice = 0;
     let selectedShippingName = 'Envio Padrão - Prazo de 6 a 14 dias';
 
+    // ── ORDER BUMPS ────────────────────────────────────────
+    const BUMP_BRAS_PRICE     = 49.90;
+    const BUMP_BRAS_UNITS     = 2;
+    const BUMP_PRIORITY_PRICE = 8.90;
+    let orderBumpBras     = false;
+    let orderBumpPriority = false;
+
+    function orderBumpTotal() {
+        return (orderBumpBras ? BUMP_BRAS_PRICE : 0) + (orderBumpPriority ? BUMP_PRIORITY_PRICE : 0);
+    }
+    function orderBumpUnits() {
+        return orderBumpBras ? BUMP_BRAS_UNITS : 0;
+    }
+    function toggleOrderBump(key) {
+        if (key === 'bras') orderBumpBras = !orderBumpBras;
+        if (key === 'priority') orderBumpPriority = !orderBumpPriority;
+        document.getElementById('bump-bras').classList.toggle('selected', orderBumpBras);
+        document.getElementById('bump-priority').classList.toggle('selected', orderBumpPriority);
+        updateTotalDisplay();
+        if (typeof paymentType !== 'undefined' && paymentType === 'card') {
+            const sel = document.getElementById('card-installments');
+            if (sel) { sel.innerHTML = ''; populateInstallments(); }
+        }
+    }
+
     // ── SHIPPING OPTIONS (dinâmicas) ──────────────────────
     function shippingOption(key, cost, costLabel, title, eta, selected, isFree) {
         return `
@@ -778,12 +841,13 @@
     function fmt(n) { return 'R$ ' + n.toFixed(2).replace('.', ','); }
 
     function updateTotalDisplay() {
-        const total = basePrice + selectedShippingPrice;
+        const subtotal = basePrice + orderBumpTotal();
+        const total = subtotal + selectedShippingPrice;
         const shipTxt = selectedShippingPrice === 0 ? 'Grátis' : fmt(selectedShippingPrice);
-        const units = UNITS[promoType] * qty;
+        const units = UNITS[promoType] * qty + orderBumpUnits();
 
         document.getElementById('sum-variant').textContent = `${units} unid. — Sutiã Hanna 3.0`;
-        document.getElementById('sum-subtotal').textContent = fmt(basePrice);
+        document.getElementById('sum-subtotal').textContent = fmt(subtotal);
         document.getElementById('sum-shipping').textContent = shipTxt;
         document.getElementById('sum-total').textContent = fmt(total);
         document.getElementById('sum-pix-total').textContent = fmt(total * 0.95);
@@ -792,7 +856,7 @@
         const payShip = document.getElementById('pay-ship');
         const payTotal = document.getElementById('pay-total');
         const payPix  = document.getElementById('pay-pix');
-        if (paySub) paySub.textContent = fmt(basePrice);
+        if (paySub) paySub.textContent = fmt(subtotal);
         if (payShip) payShip.textContent = shipTxt;
         if (payTotal) payTotal.textContent = fmt(total);
         if (payPix) payPix.textContent = fmt(total * 0.95);
@@ -982,7 +1046,7 @@
             }, 60);
             if (next === 4 && typeof fbq !== 'undefined' && !sessionStorage.getItem('jj_api_fired')) {
                 sessionStorage.setItem('jj_api_fired', '1');
-                const _val = Math.round((basePrice + selectedShippingPrice) * 100) / 100;
+                const _val = Math.round((basePrice + orderBumpTotal() + selectedShippingPrice) * 100) / 100;
                 fbq('track', 'AddPaymentInfo', {
                     content_name: 'Sutiã Hanna 3.0',
                     content_ids: ['sutia-hanna-30'],
@@ -1046,7 +1110,7 @@
         const sel = document.getElementById('card-installments');
         if (!sel || sel.options.length > 1) return;
         sel.innerHTML = '';
-        const total = basePrice + selectedShippingPrice;
+        const total = basePrice + orderBumpTotal() + selectedShippingPrice;
         for (let i = 1; i <= 12; i++) {
             const val = (total / i).toFixed(2).replace('.', ',');
             const opt = document.createElement('option');
@@ -1097,7 +1161,9 @@
         const [expMonth, expYear2d] = expiry.split('/');
         const expYear = '20' + expYear2d;
         const cpfDigits = document.getElementById('cust-cpf').value.replace(/\D/g, '');
-        const totalPrice = Math.round((basePrice + selectedShippingPrice) * 100) / 100;
+        const totalPrice = Math.round((basePrice + orderBumpTotal() + selectedShippingPrice) * 100) / 100;
+        const orderQuantity = UNITS[promoType] * qty + orderBumpUnits();
+        const orderShippingMethod = selectedShippingName + (orderBumpPriority ? ' + Envio Priorizado' : '');
 
         document.getElementById('loading-overlay').classList.add('active');
         try {
@@ -1130,12 +1196,12 @@
                         city: document.getElementById('addr-city').value,
                         state: document.getElementById('addr-state').value,
                     },
-                    quantity: UNITS[promoType] * qty, promo: promoType,
+                    quantity: orderQuantity, promo: promoType,
                     tamanho: urlParams.get('tamanho') || '',
                     cor: urlParams.get('cor') || '',
                     totalPrice, paymentMethodId: 'credit_card',
                     cardToken: tokenResult.id, cardPaymentMethodId, installments,
-                    shippingMethod: selectedShippingName, shippingPrice: selectedShippingPrice,
+                    shippingMethod: orderShippingMethod, shippingPrice: selectedShippingPrice,
                     deviceId: window.MP_DEVICE_SESSION_ID || '',
                 })
             });
@@ -1173,7 +1239,9 @@
     async function payWithPix() {
         if (!validateStep1() || !validateStep2()) return;
         document.getElementById('loading-overlay').classList.add('active');
-        const totalPrice = Math.round((basePrice + selectedShippingPrice) * 0.95 * 100) / 100;
+        const totalPrice = Math.round((basePrice + orderBumpTotal() + selectedShippingPrice) * 0.95 * 100) / 100;
+        const orderQuantity = UNITS[promoType] * qty + orderBumpUnits();
+        const orderShippingMethod = selectedShippingName + (orderBumpPriority ? ' + Envio Priorizado' : '');
         try {
             const res = await fetch('/api/process-payment', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -1191,11 +1259,11 @@
                         city: document.getElementById('addr-city').value,
                         state: document.getElementById('addr-state').value,
                     },
-                    quantity: UNITS[promoType] * qty, promo: promoType,
+                    quantity: orderQuantity, promo: promoType,
                     tamanho: urlParams.get('tamanho') || '',
                     cor: urlParams.get('cor') || '',
                     totalPrice, paymentMethodId: 'pix',
-                    shippingMethod: selectedShippingName, shippingPrice: selectedShippingPrice,
+                    shippingMethod: orderShippingMethod, shippingPrice: selectedShippingPrice,
                     deviceId: window.MP_DEVICE_SESSION_ID || '',
                 })
             });
