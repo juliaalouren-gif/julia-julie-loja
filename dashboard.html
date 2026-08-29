@@ -75,13 +75,24 @@
   .table-header { display:flex; justify-content:space-between; align-items:center; padding:18px 24px; border-bottom:1px solid #f5eaf0; }
   .table-header h2 { font-size:16px; font-weight:700; }
   .table-count { background:var(--rosa-claro); color:var(--rosa-escuro); font-size:13px; font-weight:600; padding:4px 12px; border-radius:20px; border:1px solid var(--rosa-borda); }
+  .table-scroll-top { overflow-x:auto; overflow-y:hidden; height:14px; }
+  .table-scroll-top-inner { height:1px; }
   .table-wrap { overflow-x:auto; }
   table { width:100%; border-collapse:collapse; font-size:13px; min-width:900px; }
   thead th { background:#fdf7fa; padding:12px 14px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; color:#aaa; letter-spacing:0.4px; white-space:nowrap; border-bottom:1px solid #f5eaf0; }
   tbody tr { border-bottom:1px solid #fdf5f8; transition:background 0.15s; }
   tbody tr:hover { background:#fdf7fa; }
+  tbody tr:hover .col-sticky { background:#fdf7fa; }
   tbody td { padding:12px 14px; vertical-align:middle; white-space:nowrap; }
   tbody td.wrap { white-space:normal; max-width:180px; }
+  .col-datahora { width:104px; min-width:104px; }
+  .col-cliente { width:210px; min-width:210px; white-space:normal !important; }
+  .col-sticky { position:sticky; background:#fff; z-index:1; box-shadow:2px 0 4px rgba(0,0,0,0.04); }
+  th.col-sticky { z-index:2; }
+  .col-datahora.col-sticky { left:0; }
+  .col-cliente.col-sticky { left:104px; }
+  .cliente-name { font-weight:700; color:#222; }
+  .cliente-meta { display:block; font-size:11.5px; color:#999; line-height:1.5; margin-top:2px; }
   .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
   .badge.aprovado { background:#e8f5e9; color:#1a7a4a; }
   .badge.pendente { background:#fff8e7; color:#e67e00; }
@@ -177,14 +188,13 @@
         <h2>Pedidos</h2>
         <span class="table-count" id="table-count">— pedidos</span>
       </div>
-      <div class="table-wrap">
+      <div class="table-scroll-top" id="table-scroll-top"><div class="table-scroll-top-inner" id="table-scroll-top-inner"></div></div>
+      <div class="table-wrap" id="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Data / Hora</th>
-              <th>Cliente</th>
-              <th>Telefone</th>
-              <th>E-mail</th>
+              <th class="col-datahora col-sticky">Data / Hora</th>
+              <th class="col-cliente col-sticky">Cliente</th>
               <th>Endereço</th>
               <th>Kit</th>
               <th>QTD</th>
@@ -198,7 +208,7 @@
             </tr>
           </thead>
           <tbody id="orders-body">
-            <tr><td colspan="14" class="loading">Carregando...</td></tr>
+            <tr><td colspan="12" class="loading">Carregando...</td></tr>
           </tbody>
         </table>
       </div>
@@ -296,6 +306,22 @@ function renderAll(orders) {
   renderStats(orders);
   renderTable(orders);
   document.getElementById('table-count').textContent = `${orders.length} pedidos`;
+  syncTopScrollbar();
+}
+
+let topScrollbarWired = false;
+function syncTopScrollbar() {
+  const wrap  = document.getElementById('table-wrap');
+  const top   = document.getElementById('table-scroll-top');
+  const inner = document.getElementById('table-scroll-top-inner');
+  if (!wrap || !top || !inner) return;
+  const table = wrap.querySelector('table');
+  inner.style.width = (table ? table.scrollWidth : wrap.scrollWidth) + 'px';
+  if (!topScrollbarWired) {
+    topScrollbarWired = true;
+    top.addEventListener('scroll', () => { wrap.scrollLeft = top.scrollLeft; });
+    wrap.addEventListener('scroll', () => { top.scrollLeft = wrap.scrollLeft; });
+  }
 }
 
 function renderStats(orders) {
@@ -343,18 +369,22 @@ async function toggleFeito(id, novoValor) {
 function renderTable(orders) {
   const tbody = document.getElementById('orders-body');
   if (!orders.length) {
-    tbody.innerHTML = '<tr><td colspan="14" class="no-orders">Nenhum pedido encontrado.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="12" class="no-orders">Nenhum pedido encontrado.</td></tr>';
     return;
   }
   tbody.innerHTML = orders.map(o => {
     const dt = o.criado_em ? new Date(o.criado_em).toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
     const addr = [o.rua, o.numero, o.complemento, o.bairro, o.cidade, o.estado, o.cep ? `CEP ${o.cep}` : ''].filter(Boolean).join(', ');
     const statusBadge = `<span class="badge ${o.status || 'pendente'}">${capitalize(o.status || 'pendente')}</span>`;
+    const cpfFmt = (o.cpf || '').toString().trim();
     return `<tr>
-      <td>${dt}</td>
-      <td><strong>${esc(o.nome)}</strong></td>
-      <td>${esc(o.telefone)}</td>
-      <td>${esc(o.email)}</td>
+      <td class="col-datahora col-sticky">${dt}</td>
+      <td class="col-cliente col-sticky">
+        <span class="cliente-name">${esc(o.nome)}</span>
+        <span class="cliente-meta">${esc(o.telefone)}</span>
+        <span class="cliente-meta">${esc(o.email)}</span>
+        <span class="cliente-meta">CPF: ${cpfFmt ? esc(cpfFmt) : '—'}</span>
+      </td>
       <td class="wrap">${esc(addr)}</td>
       <td>${esc(o.nome_kit)}</td>
       <td>${o.quantidade || 1}</td>
