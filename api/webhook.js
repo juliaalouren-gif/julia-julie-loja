@@ -67,8 +67,7 @@ module.exports = async (req, res) => {
 
         if (shouldNotify) {
             for (const order of orders) {
-                // WhatsApp ainda não ativado - aguardando confirmação da instância Z-API.
-                // await sendWhatsAppConfirmation(order.nome, order.telefone);
+                await sendWhatsAppConfirmation(order.nome, order.telefone);
                 await emitBlingNfe(order);
             }
         }
@@ -88,7 +87,7 @@ async function sendWhatsAppConfirmation(nome, telefone) {
         if (!phone.startsWith('55')) phone = '55' + phone;
 
         const primeiroNome = (nome || '').trim().split(' ')[0] || 'cliente';
-        const message = `Olá ${primeiroNome}, seu pedido foi confirmado com sucesso e logo será processado e sairá para entrega. Prazo de entrega é de 14 dias.\n\nPara mais dúvidas chame o suporte pelo número: 21 97560-5337`;
+        const message = `Olá ${primeiroNome}, seu pedido foi confirmado com sucesso e logo será processado e sairá para entrega. Prazo de entrega é de 14 dias.\n\nPara mais dúvidas chame o suporte pelo número: 21 97560-5337\n\nE como você é nossa cliente que comprou nessa super promoção, estamos oferecendo para você, ${primeiroNome}, o kit de 10 calcinhas 100% algodão recomendadas por ginecologistas por menos de R$100 reais, aproveite agora por esse link: https://www.juliajuliesutia.com.br/calcinha#`;
 
         await fetch(`https://api.z-api.io/instances/${ZAPI_INSTANCE_ID}/token/${ZAPI_TOKEN}/send-text`, {
             method: 'POST',
