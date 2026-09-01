@@ -8,14 +8,22 @@ const ZAPI_CLIENT_TOKEN  = process.env.ZAPI_CLIENT_TOKEN;
 const BLING_CLIENT_ID     = process.env.BLING_CLIENT_ID;
 const BLING_CLIENT_SECRET = process.env.BLING_CLIENT_SECRET;
 
-// "Venda de mercadoria a não contribuinte" - natureza de operação padrão da conta Bling,
-// usada pois todos os clientes da loja compram com CPF (consumidor final).
-const BLING_NATUREZA_OPERACAO_ID = 15111369428;
+// Produtos (por tamanho) cadastrados no Bling para o Sutiã Sustentação Hanna.
+const BLING_PRODUTO_POR_TAMANHO = {
+    'P':   { id: 16699171798, codigo: 'hanna/p' },
+    'M':   { id: 16699171799, codigo: 'hanna/m' },
+    'G':   { id: 16699171800, codigo: 'hanna/g' },
+    'GG':  { id: 16699171801, codigo: 'hanna/gg' },
+    'XL':  { id: 16699171802, codigo: 'hanna/xl' },
+    '2XL': { id: 16699734769, codigo: 'hanna/2xl' },
+    '3XL': { id: 16699734772, codigo: 'hanna/3xl' },
+    '4XL': { id: 16699734774, codigo: 'hanna/4xl' }
+};
 
-// SKUs cadastrados no Bling para cada tamanho do Sutiã Sustentação Hanna.
-const BLING_SKU_POR_TAMANHO = {
-    'P': 'hanna/p', 'M': 'hanna/m', 'G': 'hanna/g', 'GG': 'hanna/gg',
-    'XL': 'hanna/xl', '2XL': 'hanna/2xl', '3XL': 'hanna/3xl', '4XL': 'hanna/4xl'
+// Formas de pagamento cadastradas no Bling.
+const BLING_FORMA_PAGAMENTO = {
+    PIX: 10210399,
+    CARTAO: 11036296
 };
 
 module.exports = async (req, res) => {
@@ -45,7 +53,7 @@ module.exports = async (req, res) => {
         // Look up the order(s) BEFORE updating, so we know whether this is the
         // first time this payment is becoming 'aprovado'. Mercado Pago retries
         // webhooks, and we only want the WhatsApp confirmation sent once.
-        const findRes = await fetch(`${SUPABASE_URL}/rest/v1/pedidos?observacoes=like.*${paymentId}*&select=id,status,nome,telefone,email,cpf,cep,rua,numero,complemento,bairro,cidade,estado,kit,quantidade,tamanho,total`, {
+        const findRes = await fetch(`${SUPABASE_URL}/rest/v1/pedidos?observacoes=like.*${paymentId}*&select=id,status,nome,telefone,email,cpf,cep,rua,numero,complemento,bairro,cidade,estado,kit,quantidade,tamanho,total,forma_pagamento`, {
             headers: {
                 'apikey': SUPABASE_KEY,
                 'Authorization': `Bearer ${SUPABASE_KEY}`
@@ -157,39 +165,33 @@ async function getBlingAccessToken() {
     return tokenData.access_token;
 }
 
-async function emitBlingNfe(order) {
-    try {
-        if (!BLING_CLIENT_ID || !BLING_CLIENT_SECRET) return;
-        if (!order.kit || String(order.kit).startsWith('CALC')) return; // calcinha fica de fora, só sutiã
+async function getOrCreateBlingContato(order, accessToken) {
+    const cpf = String(order.cpf || '').replace(/\D/g, '');
+    if (!cpf) return null;
 
-        const tamanhoPrefixo = String(order.tamanho || '').split(' ')[0].toUpperCase();
-        const sku = BLING_SKU_POR_TAMANHO[tamanhoPrefixo];
-        if (!sku) {
-            console.error('Bling NF-e: tamanho não mapeado para SKU:', order.tamanho, '(pedido', order.id, ')');
-            return;
-        }
+    const searchRes = await fetch(`https://api.bling.com.br/Api/v3/contatos?numeroDocumento=${cpf}`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+    });
+    const searchData = await searchRes.json();
+    if (Array.isArray(searchData?.data) && searchData.data.length) {
+        return searchData.data[0].id;
+    }
 
-        const accessToken = await getBlingAccessToken();
-        if (!accessToken) {
-            console.error('Bling NF-e: token de acesso indisponível (pedido', order.id, ')');
-            return;
-        }
-
-        const cpf = String(order.cpf || '').replace(/\D/g, '');
-        const quantidade = parseInt(order.quantidade, 10) || 1;
-        const totalPedido = parseFloat(order.total) || 0;
-        const valorUnitario = quantidade > 0 ? Math.round((totalPedido / quantidade) * 100) / 100 : totalPedido;
-
-        const body = {
-            tipo: 1,
-            dataOperacao: new Date().toISOString().slice(0, 10),
-            contato: {
-                nome: order.nome || '',
-                tipoPessoa: 'F',
-                numeroDocumento: cpf,
-                telefone: order.telefone || undefined,
-                email: order.email || undefined,
-                endereco: {
+    const createRes = await fetch('https://api.bling.com.br/Api/v3/contatos', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nome: order.nome || '',
+            tipo: 'F',
+            situacao: 'A',
+            numeroDocumento: cpf,
+            telefone: order.telefone || undefined,
+            email: order.email || undefined,
+            endereco: {
+                geral: {
                     endereco: order.rua || '',
                     numero: order.numero || 'S/N',
                     complemento: order.complemento || undefined,
@@ -198,37 +200,97 @@ async function emitBlingNfe(order) {
                     municipio: order.cidade || '',
                     uf: order.estado || undefined
                 }
-            },
-            naturezaOperacao: { id: BLING_NATUREZA_OPERACAO_ID },
-            finalidade: 1,
+            }
+        })
+    });
+    const createData = await createRes.json();
+    if (!createRes.ok || !createData?.data?.id) {
+        console.error('Bling contato create failed:', JSON.stringify(createData));
+        return null;
+    }
+    return createData.data.id;
+}
+
+async function emitBlingNfe(order) {
+    try {
+        if (!BLING_CLIENT_ID || !BLING_CLIENT_SECRET) return;
+        if (!order.kit || String(order.kit).startsWith('CALC')) return; // calcinha fica de fora, só sutiã
+
+        const tamanhoPrefixo = String(order.tamanho || '').split(' ')[0].toUpperCase();
+        const produto = BLING_PRODUTO_POR_TAMANHO[tamanhoPrefixo];
+        if (!produto) {
+            console.error('Bling: tamanho não mapeado para produto:', order.tamanho, '(pedido', order.id, ')');
+            return;
+        }
+
+        const accessToken = await getBlingAccessToken();
+        if (!accessToken) {
+            console.error('Bling: token de acesso indisponível (pedido', order.id, ')');
+            return;
+        }
+
+        const contatoId = await getOrCreateBlingContato(order, accessToken);
+        if (!contatoId) {
+            console.error('Bling: não foi possível localizar/criar contato (pedido', order.id, ')');
+            return;
+        }
+
+        const quantidade = parseInt(order.quantidade, 10) || 1;
+        const totalPedido = parseFloat(order.total) || 0;
+        const valorUnitario = quantidade > 0 ? Math.round((totalPedido / quantidade) * 100) / 100 : totalPedido;
+        const hoje = new Date().toISOString().slice(0, 10);
+        const formaPagamentoId = String(order.forma_pagamento || '').toUpperCase().includes('PIX')
+            ? BLING_FORMA_PAGAMENTO.PIX
+            : BLING_FORMA_PAGAMENTO.CARTAO;
+
+        const pedidoBody = {
+            data: hoje,
+            dataSaida: hoje,
+            dataPrevista: hoje,
+            contato: { id: contatoId },
             itens: [{
-                codigo: sku,
+                codigo: produto.codigo,
                 unidade: 'UN',
                 quantidade,
-                valor: valorUnitario
+                valor: valorUnitario,
+                descricao: `Sutiã Sustentação Hanna Tamanho:${tamanhoPrefixo}`,
+                produto: { id: produto.id }
             }],
             parcelas: [{
-                data: new Date().toISOString().slice(0, 10),
-                valor: totalPedido
+                dataVencimento: hoje,
+                valor: totalPedido,
+                formaPagamento: { id: formaPagamentoId }
             }]
         };
 
-        const createRes = await fetch('https://api.bling.com.br/Api/v3/nfe', {
+        const pedidoRes = await fetch('https://api.bling.com.br/Api/v3/pedidos/vendas', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify(pedidoBody)
         });
-        const createData = await createRes.json();
-
-        if (!createRes.ok || !createData?.data?.id) {
-            console.error('Bling NF-e create failed (pedido', order.id, '):', JSON.stringify(createData));
+        const pedidoData = await pedidoRes.json();
+        if (!pedidoRes.ok || !pedidoData?.data?.id) {
+            console.error('Bling pedido de venda create failed (pedido', order.id, '):', JSON.stringify(pedidoData));
             return;
         }
+        const idPedidoVenda = pedidoData.data.id;
 
-        const idNotaFiscal = createData.data.id;
+        const gerarNfeRes = await fetch(`https://api.bling.com.br/Api/v3/pedidos/vendas/${idPedidoVenda}/gerar-nfe`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        const gerarNfeData = await gerarNfeRes.json();
+        if (!gerarNfeRes.ok || !gerarNfeData?.idNotaFiscal) {
+            console.error('Bling gerar-nfe failed (pedido', order.id, ', pedido venda', idPedidoVenda, '):', JSON.stringify(gerarNfeData));
+            return;
+        }
+        const idNotaFiscal = gerarNfeData.idNotaFiscal;
 
         const sendRes = await fetch(`https://api.bling.com.br/Api/v3/nfe/${idNotaFiscal}/enviar`, {
             method: 'POST',
