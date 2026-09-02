@@ -3,6 +3,8 @@ const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
 const SUPABASE_URL    = process.env.SUPABASE_URL;
 const SUPABASE_KEY    = process.env.SUPABASE_SERVICE_KEY;
 
+const { sendWhatsAppConfirmation, emitBlingNfe } = require('./_shared');
+
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -138,6 +140,19 @@ module.exports = async (req, res) => {
             });
         } catch (dbErr) {
             console.error('Supabase save error:', dbErr);
+        }
+
+        // Pagamentos no cartão são aprovados na hora (diferente do PIX, que só
+        // aprova quando o cliente paga e o webhook do Mercado Pago avisa depois).
+        // Por isso disparamos aqui também - o webhook.js já sabe não repetir,
+        // pois vai encontrar o pedido já salvo como 'aprovado'.
+        if (orderData.status === 'aprovado') {
+            try {
+                await sendWhatsAppConfirmation(orderData);
+                await emitBlingNfe(orderData);
+            } catch (notifyErr) {
+                console.error('Notification error:', notifyErr);
+            }
         }
 
         // Response
