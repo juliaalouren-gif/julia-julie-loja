@@ -573,15 +573,6 @@
 
                 <div class="order-bumps">
                     <div class="order-bumps-title"><i class="fas fa-gift"></i> ADICIONE AO SEU PEDIDO:</div>
-                    <div class="bump-card" id="bump-bras" onclick="toggleOrderBump('bras')">
-                        <div class="bump-checkbox"><i class="fas fa-check"></i></div>
-                        <div class="bump-body">
-                            <span class="bump-badge">MAIS VENDIDO</span>
-                            <div class="bump-title">Leve + 2 Sutiãs Sustentação</div>
-                            <div class="bump-desc">Leve mais 2 unidades com desconto exclusivo</div>
-                        </div>
-                        <div class="bump-price">+ R$ 49,90</div>
-                    </div>
                     <div class="bump-card" id="bump-priority" onclick="toggleOrderBump('priority')">
                         <div class="bump-checkbox"><i class="fas fa-check"></i></div>
                         <div class="bump-body">
@@ -787,22 +778,17 @@
     let selectedShippingName = 'Envio Padrão - Prazo de 6 a 14 dias';
 
     // ── ORDER BUMPS ────────────────────────────────────────
-    const BUMP_BRAS_PRICE     = 49.90;
-    const BUMP_BRAS_UNITS     = 2;
     const BUMP_PRIORITY_PRICE = 8.90;
-    let orderBumpBras     = false;
     let orderBumpPriority = false;
 
     function orderBumpTotal() {
-        return (orderBumpBras ? BUMP_BRAS_PRICE : 0) + (orderBumpPriority ? BUMP_PRIORITY_PRICE : 0);
+        return orderBumpPriority ? BUMP_PRIORITY_PRICE : 0;
     }
     function orderBumpUnits() {
-        return orderBumpBras ? BUMP_BRAS_UNITS : 0;
+        return 0;
     }
     function toggleOrderBump(key) {
-        if (key === 'bras') orderBumpBras = !orderBumpBras;
         if (key === 'priority') orderBumpPriority = !orderBumpPriority;
-        document.getElementById('bump-bras').classList.toggle('selected', orderBumpBras);
         document.getElementById('bump-priority').classList.toggle('selected', orderBumpPriority);
         updateTotalDisplay();
         if (typeof paymentType !== 'undefined' && paymentType === 'card') {
