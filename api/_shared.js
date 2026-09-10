@@ -31,7 +31,9 @@ async function sendWhatsAppConfirmation(order) {
         if (kit && String(kit).startsWith('CALC')) return; // calcinha fica de fora - mensagem oferece o kit de calcinha
 
         let phone = String(telefone).replace(/\D/g, '');
-        if (!phone.startsWith('55')) phone = '55' + phone;
+        // Números salvos são sempre no formato local (DDD+número, sem DDI). Prefixar
+        // sempre - checar "startsWith('55')" falha para clientes com DDD 55 (RS).
+        if (phone.length <= 11) phone = '55' + phone;
 
         const primeiroNome = (nome || '').trim().split(' ')[0] || 'cliente';
         const message = `Olá ${primeiroNome}, seu pedido foi confirmado com sucesso e logo será processado e sairá para entrega. Prazo de entrega é de 14 dias.\n\nPara mais dúvidas chame o suporte pelo número: 21 97560-5337\n\nE como você é nossa cliente que comprou nessa super promoção, estamos oferecendo para você, ${primeiroNome}, o kit de 10 calcinhas 100% algodão recomendadas por ginecologistas por menos de R$100 reais, aproveite agora por esse link: https://www.juliajuliesutia.com.br/calcinha#`;
